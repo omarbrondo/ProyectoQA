@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>i_Texto libre_fas fa-pen i-icon fa-fw</name>
+   <tag></tag>
+   <elementGuidId>3c79759c-6de7-4f7a-a5b0-3dde7edd048c</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>CSS</key>
+         <value></value>
+      </entry>
+      <entry>
+         <key>XPATH</key>
+         <value>//main[@id='main-layout-container']/div/div/div/div[2]/div/div/div[2]/div[20]/div/div/div/div[4]/span/a/i</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>i</value>
+      <webElementGuid>f438d718-309a-489f-9d7a-9edac159b565</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>fas fa-pen i-icon fa-fw</value>
+      <webElementGuid>8e0f2b3c-4dbd-40bb-af1a-cfb73c29a33a</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;main-layout-container&quot;)/div[@class=&quot;main-panel&quot;]/div[@class=&quot;container&quot;]/div[@class=&quot;row&quot;]/div[@class=&quot;col-md-10 px-4 mt-5&quot;]/div[@class=&quot;card mb-4 field-group-card&quot;]/div[@class=&quot;card-body pt-2&quot;]/div[@class=&quot;accordion accordion-group shadow-hover hidden-hover ui-sortable&quot;]/div[@class=&quot;card bx-0 auxdata-card-single auxdata-data ui-sortable-handle&quot;]/div[@class=&quot;card-header&quot;]/div[@class=&quot;collapsed&quot;]/div[@class=&quot;row&quot;]/div[@class=&quot;col-md-3 text-end&quot;]/span[@class=&quot;hidden&quot;]/a[@class=&quot;me-2 text-secondary btn-edit-field text-decoration-none&quot;]/i[@class=&quot;fas fa-pen i-icon fa-fw&quot;]</value>
+      <webElementGuid>52b505b4-ea4c-4329-9fd1-50a66f2b80e2</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//main[@id='main-layout-container']/div/div/div/div[2]/div/div/div[2]/div[20]/div/div/div/div[4]/span/a/i</value>
+      <webElementGuid>6c2301ba-19ea-44d4-8b55-16afd35b8a03</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//div[20]/div/div/div/div[4]/span/a/i</value>
+      <webElementGuid>1b2aba92-ee6a-43da-a722-f52897b81572</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

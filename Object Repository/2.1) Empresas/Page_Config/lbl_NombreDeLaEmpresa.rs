@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>lbl_NombreDeLaEmpresa</name>
+   <tag></tag>
+   <elementGuidId>587154ba-a749-4dbd-838e-4315816f2318</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>CSS</key>
+         <value>label.mb-2</value>
+      </entry>
+      <entry>
+         <key>XPATH</key>
+         <value>//main[@id='main-layout-container']/div/div/div/div[2]/form/div/label</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>label</value>
+      <webElementGuid>28662097-60f4-4b81-a4f8-b9d0e934a5de</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>mb-2</value>
+      <webElementGuid>2c86cb77-d475-436c-87d1-ba4ca5585b93</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>for</name>
+      <type>Main</type>
+      <value>company-name</value>
+      <webElementGuid>222fc30f-3498-4ccc-ac36-70fc0627a892</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>text</name>
+      <type>Main</type>
+      <value>Nombre de la empresa</value>
+      <webElementGuid>9b966365-848a-4974-be06-efa5674629e4</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;main-layout-container&quot;)/div[@class=&quot;main-panel&quot;]/div[@class=&quot;container&quot;]/div[@class=&quot;row&quot;]/div[@class=&quot;col-5 px-4&quot;]/form[1]/div[@class=&quot;form-group mb-3&quot;]/label[@class=&quot;mb-2&quot;]</value>
+      <webElementGuid>8c4e1883-2919-42a9-8679-efa97be5eae6</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//main[@id='main-layout-container']/div/div/div/div[2]/form/div/label</value>
+      <webElementGuid>06163653-c78a-4a43-bb7d-c789d2eddd71</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Textos'])[1]/following::label[1]</value>
+      <webElementGuid>0416a866-f28c-451e-b12b-f4e381444821</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Módulos'])[1]/following::label[1]</value>
+      <webElementGuid>b31076d0-3d23-45b0-bf1c-8e826540739f</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Prefijo'])[1]/preceding::label[1]</value>
+      <webElementGuid>06ca5733-8746-4f76-a67a-cd09b813f876</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='.proveedores.intiza.com'])[1]/preceding::label[2]</value>
+      <webElementGuid>cd4e5fe7-fdd8-43cb-9039-3622a79c9505</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>//*/text()[normalize-space(.)='Nombre de la empresa']/parent::*</value>
+      <webElementGuid>f5dc321f-cbe8-4ba4-b622-16224f83e9f6</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//label</value>
+      <webElementGuid>3e03f45b-35ab-480c-a5f8-8352f14c47d7</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:customAttributes</name>
+      <type>Main</type>
+      <value>//label[(text() = 'Nombre de la empresa' or . = 'Nombre de la empresa')]</value>
+      <webElementGuid>e3c712af-c5f5-40c2-be88-d05b4cb5e5aa</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>btn_Engranaje</name>
+   <tag></tag>
+   <elementGuidId>d3c3a2cb-6cb3-4ac3-af45-a1e5e9f42497</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>CSS</key>
+         <value>i.fal.fa-cog</value>
+      </entry>
+      <entry>
+         <key>XPATH</key>
+         <value>//div[@id='company']/div/div[2]/a/i</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>i</value>
+      <webElementGuid>6a3bddeb-76d7-4fbd-a5f7-7d638ccf5049</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>fal fa-cog</value>
+      <webElementGuid>83cbd4f4-6b0f-4dc2-a578-ef16df2eaa6e</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;company&quot;)/div[@class=&quot;collapse navbar-collapse ms-auto&quot;]/div[@class=&quot;nav-item dropdown&quot;]/a[@class=&quot;nav-link dropdown-toggle show&quot;]/i[@class=&quot;fal fa-cog&quot;]</value>
+      <webElementGuid>510da213-8b94-438f-9f4f-b377b87caa25</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//div[@id='company']/div/div[2]/a/i</value>
+      <webElementGuid>81208c57-1387-4078-92ee-48153ed0105f</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//div[2]/a/i</value>
+      <webElementGuid>7c6dd44f-3d4d-47cd-9ed9-a1da4eece387</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

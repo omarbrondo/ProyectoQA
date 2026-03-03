@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>i_Automatico_fas fa-pen fa-fw</name>
+   <tag></tag>
+   <elementGuidId>68b0ec70-4dc6-4bcf-a2b6-96f165f92063</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>CSS</key>
+         <value>tr:nth-of-type(2) > td:nth-of-type(6) > span.hidden > a.currency-edit.text-secondary.me-1.text-decoration-none > i.fas.fa-pen.fa-fw</value>
+      </entry>
+      <entry>
+         <key>XPATH</key>
+         <value>//main[@id='main-layout-container']/div/div/div/div[2]/table/tbody/tr[2]/td[6]/span/a/i</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>i</value>
+      <webElementGuid>6b2d14d7-86d5-4988-98d9-ee86931e31cd</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>fas fa-pen fa-fw</value>
+      <webElementGuid>d089083e-710e-44a3-977d-3221f3f033a4</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;main-layout-container&quot;)/div[@class=&quot;main-panel&quot;]/div[@class=&quot;container&quot;]/div[@class=&quot;row&quot;]/div[@class=&quot;col-md-10 px-4&quot;]/table[@class=&quot;table mb-4 shadow-hover hidden-hover&quot;]/tbody[1]/tr[2]/td[6]/span[@class=&quot;hidden&quot;]/a[@class=&quot;currency-edit text-secondary me-1 text-decoration-none&quot;]/i[@class=&quot;fas fa-pen fa-fw&quot;]</value>
+      <webElementGuid>6da45700-8cb3-4104-8cdd-3dab00a5cf89</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//main[@id='main-layout-container']/div/div/div/div[2]/table/tbody/tr[2]/td[6]/span/a/i</value>
+      <webElementGuid>25f0a40d-4bfa-436b-acc2-c4d6e5abac43</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//tr[2]/td[6]/span/a/i</value>
+      <webElementGuid>a6a8e6e2-3d2b-452a-bd62-a0f24154f712</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>
