@@ -211,7 +211,7 @@ TestObject modalPlantillaCerrar = new TestObject()
 modalPlantillaCerrar.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class,'modal-content') and .//h3[contains(text(),'Seleccione una opción')]]")
 
 WebUI.waitForElementNotVisible(modalPlantillaCerrar, 10)
-WebUI.delay(1) // deja que el modal principal se re-renderice
+WebUI.delay(1)
 
 // ===============================
 // RE-CAPTURAR EL BOTÓN GUARDAR DEL MODAL PRINCIPAL
@@ -226,3 +226,136 @@ btnGuardarComentario.addProperty(
 
 WebUI.waitForElementClickable(btnGuardarComentario, 10)
 WebUI.click(btnGuardarComentario)
+
+// ===============================
+// VALIDAR MENSAJE "Operación exitosa"
+// ===============================
+
+TestObject alertaOperacionExitosa = new TestObject()
+alertaOperacionExitosa.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'alert-success') and contains(normalize-space(),'Operación exitosa')]"
+)
+
+WebUI.waitForElementVisible(alertaOperacionExitosa, 10)
+WebUI.verifyElementText(alertaOperacionExitosa, "Operación exitosa")
+
+// ===============================
+// CERRAR EL GROWL
+// ===============================
+
+TestObject btnCerrarGrowl = new TestObject()
+btnCerrarGrowl.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'alert-success')]//button[contains(@class,'btn-close')]"
+)
+
+WebUI.waitForElementClickable(btnCerrarGrowl, 10)
+WebUI.click(btnCerrarGrowl)
+WebUI.delay(1)
+
+// ===============================
+// VOLVER AL MÓDULO DE PLANTILLAS
+// ===============================
+
+WebUI.click(findTestObject('Object Repository/2.4) Plantillas/Page_Proveedores/btn_Engranaje'))
+WebUI.click(findTestObject('Object Repository/2.4) Plantillas/Page_Proveedores/a_Backoffice_dropdown-item'))
+WebUI.navigateToUrl('https://staging.proveedores.intiza.com/es/Company/Index')
+WebUI.click(findTestObject('Object Repository/2.4) Plantillas/Page_Config/a_Monedas_text-decoration-none'))
+
+// ===============================
+// HOVER SOBRE LA FILA "Plantilla QA"
+// ===============================
+
+TestObject filaPlantilla = new TestObject()
+filaPlantilla.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//tr[.//td[normalize-space()='Plantilla QA']]"
+)
+
+WebUI.waitForElementVisible(filaPlantilla, 10)
+WebUI.mouseOver(filaPlantilla)
+WebUI.delay(1)
+
+// ===============================
+// CLICK EN EL LÁPIZ
+// ===============================
+
+TestObject lapizPlantilla = new TestObject()
+lapizPlantilla.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//tr[.//td[normalize-space()='Plantilla QA']]//a[contains(@class,'emailTemplate-edit')]"
+)
+
+WebUI.waitForElementClickable(lapizPlantilla, 10)
+WebUI.click(lapizPlantilla)
+
+// ===============================
+// CLICK EN "Eliminar"
+// ===============================
+
+TestObject btnEliminar = new TestObject()
+btnEliminar.addProperty("id", ConditionType.EQUALS, "deleteEmailTemplate")
+
+WebUI.waitForElementClickable(btnEliminar, 10)
+WebUI.click(btnEliminar)
+
+// ===============================
+// MODAL CONFIRMAR ELIMINACIÓN
+// ===============================
+
+TestObject modalConfirmar = new TestObject()
+modalConfirmar.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'modal-content') and .//h3[contains(text(),'Confirmar eliminación')]]"
+)
+
+WebUI.waitForElementVisible(modalConfirmar, 10)
+
+// ===============================
+// CLICK EN "Eliminar" (botón rojo)
+// ===============================
+
+TestObject btnEliminarConfirmado = new TestObject()
+btnEliminarConfirmado.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//button[contains(@class,'btn-danger') and normalize-space()='Eliminar']"
+)
+
+WebUI.waitForElementClickable(btnEliminarConfirmado, 10)
+WebUI.click(btnEliminarConfirmado)
+
+// ===============================
+// VALIDAR MENSAJE “Template eliminado con éxito”
+// ===============================
+
+TestObject alertaEliminadoFinal = new TestObject()
+alertaEliminadoFinal.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'alert-success') and contains(normalize-space(),'Template eliminado con éxito')]"
+)
+
+WebUI.waitForElementVisible(alertaEliminadoFinal, 10)
+WebUI.verifyElementText(alertaEliminadoFinal, "Template eliminado con éxito")
+
+// ===============================
+// CERRAR EL GROWL FINAL
+// ===============================
+
+TestObject btnCerrarGrowlFinal = new TestObject()
+btnCerrarGrowlFinal.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'alert-success')]//button[contains(@class,'btn-close')]"
+)
+
+WebUI.waitForElementClickable(btnCerrarGrowlFinal, 10)
+WebUI.click(btnCerrarGrowlFinal)
+WebUI.delay(1)
