@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>1.2) Login Proveedor</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>d5e708c9-d500-4d56-8ba1-c5a06636deba</testCaseGuid>
+</TestCaseEntity>
