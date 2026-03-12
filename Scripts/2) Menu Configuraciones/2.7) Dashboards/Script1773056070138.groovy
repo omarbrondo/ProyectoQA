@@ -140,3 +140,233 @@ opcionAreaSolicitante.addProperty(
 )
 WebUI.click(opcionAreaSolicitante)
 
+// ===============================
+// CLIC EN GUARDAR
+// ===============================
+TestObject btnGuardar = new TestObject()
+btnGuardar.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//button[@type='submit' and .//strong[normalize-space()='GUARDAR']]"
+)
+
+WebUI.waitForElementClickable(btnGuardar, 10)
+WebUI.click(btnGuardar)
+
+
+// ===============================
+// VALIDAR GROWL "Cambios guardados"
+// ===============================
+TestObject growlGuardado = new TestObject()
+growlGuardado.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//div[contains(@class,'growl')]//div[contains(@class,'alert-success') and contains(.,'Cambios guardados')]"
+)
+
+WebUI.waitForElementVisible(growlGuardado, 10)
+
+
+// ===============================
+// CERRAR EL GROWL
+// ===============================
+TestObject btnCerrarGrowl = new TestObject()
+btnCerrarGrowl.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//div[contains(@class,'growl')]//button[contains(@class,'btn-close')]"
+)
+
+WebUI.waitForElementClickable(btnCerrarGrowl, 10)
+WebUI.click(btnCerrarGrowl)
+
+// ===============================
+// CLIC EN TAB "Dashboards"
+// ===============================
+TestObject tabDashboards = new TestObject()
+tabDashboards.addProperty(
+	"id",
+	ConditionType.EQUALS,
+	"nav-dashboards-tab"
+)
+
+WebUI.waitForElementClickable(tabDashboards, 10)
+WebUI.click(tabDashboards)
+
+// ===============================
+// CLIC EN "+ Nuevo" (Dashboards)
+// ===============================
+TestObject btnNuevoDashboard = new TestObject()
+btnNuevoDashboard.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//a[@href='/es/Dashboard/Edit' and contains(@class,'btn-link')]"
+)
+
+WebUI.waitForElementClickable(btnNuevoDashboard, 10)
+WebUI.click(btnNuevoDashboard)
+
+// ===============================
+// COMPLETAR NOMBRE DEL DASHBOARD
+// ===============================
+TestObject inputNombreDashboard = new TestObject()
+inputNombreDashboard.addProperty("id", ConditionType.EQUALS, "Name")
+
+WebUI.waitForElementVisible(inputNombreDashboard, 10)
+WebUI.setText(inputNombreDashboard, "Dashboard QA")
+
+
+// ===============================
+// ROLES → Seleccionar "Admin"
+// ===============================
+
+// Abrir chosen-multi
+TestObject chosenRoles = new TestObject()
+chosenRoles.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//div[@id='RoleIdList_chosen']//input"
+)
+WebUI.click(chosenRoles)
+
+// Seleccionar "Admin"
+TestObject opcionAdmin = new TestObject()
+opcionAdmin.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//div[@id='RoleIdList_chosen']//li[contains(@class,'active-result') and normalize-space()='Admin']"
+)
+WebUI.waitForElementClickable(opcionAdmin, 10)
+WebUI.click(opcionAdmin)
+
+
+// ===============================
+// CLIC EN "Agregar" (Gráficos)
+// ===============================
+TestObject btnAgregarGrafico = new TestObject()
+btnAgregarGrafico.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//button[@type='button' and @data-bs-target='#modal-add-graphmodule']"
+)
+
+WebUI.waitForElementClickable(btnAgregarGrafico, 10)
+WebUI.click(btnAgregarGrafico)
+
+// ===============================
+// VALIDAR / SELECCIONAR "Dashboard QA" EN CHOSEN
+// ===============================
+
+// Obtener texto actual del chosen
+TestObject spanGraphModule = new TestObject()
+spanGraphModule.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//div[@id='drp_graphmodule_chosen']//a/span"
+)
+
+String valorActual = WebUI.getText(spanGraphModule)
+
+// Si NO es "Dashboard QA", abrir chosen y seleccionarlo
+if (valorActual != "Dashboard QA") {
+
+	// Abrir chosen
+	TestObject chosenGraphModule = new TestObject()
+	chosenGraphModule.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//div[@id='drp_graphmodule_chosen']//a"
+	)
+	WebUI.click(chosenGraphModule)
+
+	// Seleccionar "Dashboard QA"
+	TestObject opcionDashboardQA = new TestObject()
+	opcionDashboardQA.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//div[@id='drp_graphmodule_chosen']//li[contains(@class,'active-result') and normalize-space()='Dashboard QA']"
+	)
+
+	WebUI.waitForElementClickable(opcionDashboardQA, 10)
+	WebUI.click(opcionDashboardQA)
+}
+
+
+// ===============================
+// CLIC EN BOTÓN "Agregar" DEL MODAL
+// ===============================
+TestObject btnAgregarModal = new TestObject()
+btnAgregarModal.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//button[@type='submit' and contains(@class,'btn-submit-form')]"
+)
+
+WebUI.waitForElementClickable(btnAgregarModal, 10)
+WebUI.click(btnAgregarModal)
+
+// ===============================
+// CLIC EN GUARDAR (Dashboard)
+// ===============================
+TestObject btnGuardarDashboard = new TestObject()
+btnGuardarDashboard.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//button[@type='submit' and .//strong[normalize-space()='GUARDAR']]"
+)
+
+WebUI.waitForElementClickable(btnGuardarDashboard, 10)
+WebUI.click(btnGuardarDashboard)
+
+
+// ===============================
+// VALIDAR GROWL "Cambios guardados"
+// ===============================
+TestObject growlGuardadoDashboard = new TestObject()
+growlGuardadoDashboard.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'growl')]//div[contains(@class,'alert-success') and contains(.,'Cambios guardados')]"
+)
+
+WebUI.waitForElementVisible(growlGuardadoDashboard, 10)
+
+
+// ===============================
+// CERRAR EL GROWL
+// ===============================
+TestObject btnCerrarGrowlDashboard  = new TestObject()
+btnCerrarGrowlDashboard .addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'growl')]//button[contains(@class,'btn-close')]"
+)
+
+WebUI.waitForElementClickable(btnCerrarGrowlDashboard , 10)
+WebUI.click(btnCerrarGrowlDashboard )
+
+// ===============================
+// VOLVER A LA PANTALLA PRINCIPAL (clic en el logo)
+// ===============================
+TestObject btnHome = new TestObject()
+btnHome.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//div[@id='company']//a[@class='navbar-brand']"
+)
+
+WebUI.waitForElementClickable(btnHome, 10)
+WebUI.click(btnHome)
+
+// ===============================
+// VALIDAR QUE EL GRÁFICO "Dashboard QA" ESTÁ VISIBLE
+// ===============================
+TestObject graficoDashboardQA = new TestObject()
+graficoDashboardQA.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//div[contains(@class,'graph-container')]//h5[contains(normalize-space(),'Dashboard QA')]"
+)
+
+WebUI.waitForElementVisible(graficoDashboardQA, 15)
+

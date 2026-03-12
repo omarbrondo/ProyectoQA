@@ -16,6 +16,8 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
+import com.kms.katalon.core.testobject.TestObject
+import com.kms.katalon.core.testobject.ConditionType
 
 WebUI.openBrowser('')
 
@@ -29,7 +31,19 @@ WebUI.click(findTestObject('Object Repository/1.1) Login Usuario Interno/Page_Pr
 
 WebUI.click(findTestObject('Object Repository/1.1) Login Usuario Interno/Page_Dashboard/Selector de Empresas'))
 
-WebUI.click(findTestObject('Object Repository/1.1) Login Usuario Interno/Page_Dashboard/Empresa QA'))
+// ===============================
+// CLIC EN "Empresa QA"
+// ===============================
+TestObject opcionEmpresaQA = new TestObject()
+opcionEmpresaQA.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//ul[contains(@class,'dropdown-menu')]//a[normalize-space()='Empresa QA']"
+)
+
+WebUI.waitForElementClickable(opcionEmpresaQA, 10)
+WebUI.click(opcionEmpresaQA)
+
 
 WebUI.verifyElementText(findTestObject('Object Repository/1.1) Login Usuario Interno/Page_Proveedores/toastify_Verde'), 
     'Ahora trabajando para Empresa QA')
