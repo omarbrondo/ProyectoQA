@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>3.3) Eliminar Proveedor</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>3bebe76b-1d99-400f-b8fa-c415d2fbbff9</testCaseGuid>
+</TestCaseEntity>
