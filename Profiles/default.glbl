@@ -13,7 +13,7 @@
    </GlobalVariableEntity>
    <GlobalVariableEntity>
       <description></description>
-      <initValue>'ccX20Y6eU22lG2tMH0i+cg=='</initValue>
+      <initValue>'iW84CGOIU3mV+duxKmLGTg=='</initValue>
       <name>password</name>
       <protected>false</protected>
       <valueType>STRING</valueType>
@@ -27,7 +27,7 @@
    </GlobalVariableEntity>
    <GlobalVariableEntity>
       <description></description>
-      <initValue>'chxsdNdmp27Rwb+PNYL0OQ=='</initValue>
+      <initValue>'5V/o5I2ABZne8SosD3Dn6w=='</initValue>
       <name>passwordProveedor</name>
       <protected>false</protected>
       <valueType>STRING</valueType>
