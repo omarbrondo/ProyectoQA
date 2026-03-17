@@ -6,14 +6,15 @@ import com.kms.katalon.core.model.FailureHandling as FailureHandling
 // LOGIN
 WebUI.callTestCase(findTestCase('1) Logins/1.1) Login Usuario Interno'), [:], FailureHandling.STOP_ON_FAILURE)
 
-
-// ===============================
-// APROBACIÓN NIVEL 1
-// ===============================
+// 1) Gestor aprueba
 CustomKeywords.'proveedores.WorkflowProv.aprobarProveedor'()
 
+// 2) Admin rechaza
+CustomKeywords.'proveedores.WorkflowProv.rechazarProveedor'()
 
-// ===============================
-// APROBACIÓN NIVEL 2
-// ===============================
+// 3) Gestor vuelve a aprobar
 CustomKeywords.'proveedores.WorkflowProv.aprobarProveedor'()
+
+// 4) Admin aprueba definitivamente
+CustomKeywords.'proveedores.WorkflowProv.aprobarProveedor'()
+
