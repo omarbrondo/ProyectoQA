@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>3.4) Buscar un proveedor</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>c1014a3f-d4c0-4651-aa1d-8a346f4f4db2</testCaseGuid>
+</TestCaseEntity>
