@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>4.2) Filtros Requerimientos Aprobación</name>
+   <name>4.2) Alta de requerimientos Guardar Borrador</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
-   <testCaseGuid>ebff14fd-aee1-4cbc-960d-5b8dbb357923</testCaseGuid>
+   <testCaseGuid>b00500f2-8cbb-41e2-9cd9-e0b81093e9a0</testCaseGuid>
 </TestCaseEntity>

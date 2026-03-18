@@ -8,24 +8,24 @@ import com.kms.katalon.core.model.FailureHandling
 
 class UIUtils {
 
-    @Keyword
-    def cerrarDropdownUsuarioSiEstaAbierto() {
+	@Keyword
+	def cerrarDropdownUsuarioSiEstaAbierto() {
 
-        // ===============================
-        // 1) DEFINIR ELEMENTO H3
-        // ===============================
-        TestObject tituloH3 = new TestObject()
-        tituloH3.addProperty(
-            "xpath",
-            ConditionType.EQUALS,
-            "//h3"
-        )
+		// ===============================
+		// 1) DEFINIR ELEMENTO H3
+		// ===============================
+		TestObject tituloH3 = new TestObject()
+		tituloH3.addProperty(
+				"xpath",
+				ConditionType.EQUALS,
+				"//h3"
+				)
 
-        // ===============================
-        // 2) INTENTAR CLICKEAR EL H3 (SI EXISTE)
-        // ===============================
-        if (WebUI.verifyElementPresent(tituloH3, 3, FailureHandling.OPTIONAL)) {
-            WebUI.click(tituloH3)
-        }
-    }
+		// ===============================
+		// 2) INTENTAR CLICKEAR EL H3 (SI EXISTE)
+		// ===============================
+		if (WebUI.verifyElementPresent(tituloH3, 3, FailureHandling.OPTIONAL)) {
+			WebUI.click(tituloH3)
+		}
+	}
 }

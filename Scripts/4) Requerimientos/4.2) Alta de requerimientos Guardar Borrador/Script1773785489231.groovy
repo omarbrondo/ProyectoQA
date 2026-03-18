@@ -6,6 +6,12 @@ import org.openqa.selenium.Keys
 import requerimientos.LineasUtils
 import static com.kms.katalon.core.testcase.TestCaseFactory.findTestCase
 import com.kms.katalon.core.model.FailureHandling
+import com.kms.katalon.core.configuration.RunConfiguration
+import org.openqa.selenium.interactions.Actions
+import com.kms.katalon.core.webui.driver.DriverFactory
+import org.openqa.selenium.WebElement
+
+
 
 
 
@@ -131,6 +137,75 @@ new utils.TextoUtils().escribirTextoDinamico(detalleTecnico, "Detalle técnico Q
 def lineas = new LineasUtils()
 
 lineas.agregarLinea()   // ← primera línea
-lineas.agregarLinea()   // ← segunda línea
+
 
 WebUI.comment("✔ Se agregaron 2 líneas correctamente")
+
+// ===============================
+// 10) Subimos un archivo 
+// ===============================
+
+TestObject inputArchivoRequerimiento = new TestObject()
+inputArchivoRequerimiento.addProperty(
+	"xpath",
+	ConditionType.EQUALS,
+	"//input[@id='input-uploaded-file']"
+)
+
+String rutaPDF = RunConfiguration.getProjectDir() + "/Include/files/ayuda.pdf"
+
+WebUI.uploadFile(inputArchivoRequerimiento, rutaPDF)
+
+WebUI.comment("✔ Archivo PDF subido correctamente")
+WebUI.delay(2)
+// ===============================
+// 11) Guardar requerimiento como borrador
+// ===============================
+
+TestObject btnGuardarBorrador = new TestObject('btnGuardarBorrador')
+btnGuardarBorrador.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//button[@class='btn btn-light btn-save-draft' and contains(normalize-space(.),'GUARDAR COMO BORRADOR')]"
+)
+
+WebUI.scrollToElement(btnGuardarBorrador, 10)
+WebUI.waitForElementClickable(btnGuardarBorrador, 10)
+WebUI.click(btnGuardarBorrador)
+
+WebUI.comment("✔ Se hizo clic en GUARDAR COMO BORRADOR")
+WebUI.delay(2)
+
+// ===============================
+// FORZAR APERTURA DEL DROPDOWN DE REQUERIMIENTOS
+// ===============================
+
+// 1) Seleccionar el <li> de Requerimientos
+String jsOpen = """
+    var li = document.querySelector("li.pending-items.active");
+    if (li) {
+        var menu = li.querySelector(".dropdown-menu");
+        if (menu) {
+            menu.classList.add("show");   // Fuerza apertura
+            menu.style.display = "block"; // Asegura visibilidad
+        }
+    }
+"""
+WebUI.executeJavaScript(jsOpen, null)
+WebUI.delay(1)
+
+// ===============================
+// 2) CLICK EN BORRADORES
+// ===============================
+
+TestObject opcionBorradores = new TestObject('opcionBorradores')
+opcionBorradores.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//a[@class='dropdown-item' and contains(normalize-space(text()),'Borradores')]"
+)
+
+WebUI.waitForElementClickable(opcionBorradores, 10)
+WebUI.click(opcionBorradores)
+
+WebUI.comment("✔ Se ingresó a la sección Borradores")
