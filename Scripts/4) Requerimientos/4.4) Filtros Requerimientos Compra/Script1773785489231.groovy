@@ -58,3 +58,149 @@ opcionRequerimientos.addProperty(
 WebUI.waitForElementClickable(opcionRequerimientos, 10)
 WebUI.click(opcionRequerimientos)
 
+
+
+// ======================================================================
+// FUNCIÓN: Aplicar filtro rápido de Estado Compra
+// ======================================================================
+void aplicarFiltroCompra(String opcion) {
+
+	// Abrimos el dropdown del filtro rápido "Compra"
+	TestObject dropdownFiltro = new TestObject('dropdownFiltroCompra')
+	dropdownFiltro.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//div[contains(@class,'quickfilter-container') and @data-index='1']//a[contains(@class,'dropdown-toggle')]"
+	)
+
+	WebUI.waitForElementClickable(dropdownFiltro, 10)
+	WebUI.click(dropdownFiltro)
+	WebUI.delay(1)
+
+	// Seleccionamos la opción deseada
+	TestObject opcionFiltro = new TestObject('opcionFiltroCompra')
+	opcionFiltro.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//div[@data-index='1']//a[@class='dropdown-item btn-quickfilter-option px-2' and normalize-space(text())='${opcion}']"
+	)
+
+	WebUI.waitForElementClickable(opcionFiltro, 10)
+	WebUI.click(opcionFiltro)
+	WebUI.delay(1)
+
+	WebUI.comment("✔ Filtro de Compra aplicado: ${opcion}")
+}
+
+
+// ======================================================================
+// FUNCIÓN: Validar columna 'Estado compra' según filtro aplicado
+// ======================================================================
+void validarEstadoCompra(String filtro) {
+
+	// Casos donde NO validamos nada
+	if (filtro == "Todos") {
+		WebUI.comment("✔ No se valida estado para '${filtro}' (comportamiento esperado)")
+		return
+	}
+
+	// Mapeo de filtro → valores permitidos en la tabla
+	Map<String, List<String>> reglas = [
+		"Abiertos"      : ["Pendiente", "Parcial"],
+		"Pendientes"    : ["Pendiente"],
+		"Parciales"     : ["Parcial"],
+		"Vinculado a OC": ["Vinculado a OC"],
+		"Anulados"      : ["Anulado"]
+	]
+
+	List<String> permitidos = reglas[filtro]
+
+	if (permitidos == null) {
+		WebUI.comment("⚠ No hay reglas definidas para el filtro '${filtro}'")
+		return
+	}
+
+	// Selector de la columna Estado compra (columna 6)
+	TestObject estados = new TestObject('estadosCompra')
+	estados.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//table//tbody//tr//td[6]//span"
+	)
+
+	List<WebElement> listaEstados = WebUI.findWebElements(estados, 10)
+
+	if (listaEstados.isEmpty()) {
+		WebUI.comment("⚠ No hay filas para validar en la tabla")
+		return
+	}
+
+	// Validamos fila por fila
+	for (WebElement e : listaEstados) {
+		String valor = e.getText().trim()
+
+		if (!permitidos.contains(valor)) {
+			WebUI.comment("❌ Estado encontrado: '${valor}' — permitidos: ${permitidos}")
+			WebUI.verifyEqual(valor, permitidos[0]) // fuerza el fail
+		}
+	}
+
+	WebUI.comment("✔ Todas las filas cumplen con el filtro '${filtro}' → ${permitidos}")
+}
+
+
+// ======================================================================
+// TEST CASE: Validación de filtros rápidos de Estado Compra
+// ======================================================================
+
+WebUI.comment("==============================================")
+WebUI.comment(" INICIO TEST: Validación de filtros de Estado Compra ")
+WebUI.comment("==============================================")
+
+
+// ------------------------------
+// Filtro: Abiertos
+// ------------------------------
+aplicarFiltroCompra("Abiertos")
+validarEstadoCompra("Abiertos")
+
+
+// ------------------------------
+// Filtro: Pendientes
+// ------------------------------
+aplicarFiltroCompra("Pendientes")
+validarEstadoCompra("Pendientes")
+
+
+// ------------------------------
+// Filtro: Parciales
+// ------------------------------
+aplicarFiltroCompra("Parciales")
+validarEstadoCompra("Parciales")
+
+
+// ------------------------------
+// Filtro: Vinculado a OC
+// ------------------------------
+aplicarFiltroCompra("Vinculado a OC")
+validarEstadoCompra("Vinculado a OC")
+
+
+// ------------------------------
+// Filtro: Anulados
+// ------------------------------
+aplicarFiltroCompra("Anulados")
+validarEstadoCompra("Anulados")
+
+
+// ------------------------------
+// Filtro: Todos (NO valida)
+// ------------------------------
+aplicarFiltroCompra("Todos")
+validarEstadoCompra("Todos")
+
+
+WebUI.comment("==============================================")
+WebUI.comment(" ✔ TEST FINALIZADO: Filtros de Compra validados correctamente ")
+WebUI.comment("==============================================")
+

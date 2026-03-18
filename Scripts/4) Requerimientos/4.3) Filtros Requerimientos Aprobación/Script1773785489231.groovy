@@ -58,3 +58,126 @@ opcionRequerimientos.addProperty(
 WebUI.waitForElementClickable(opcionRequerimientos, 10)
 WebUI.click(opcionRequerimientos)
 
+
+
+// ======================================================================
+// FUNCIÓN: Aplicar filtro rápido de Aprobación
+// ======================================================================
+void aplicarFiltroAprobacion(String opcion) {
+
+	// Abrimos el dropdown del filtro rápido
+	TestObject dropdownFiltro = new TestObject('dropdownFiltro')
+	dropdownFiltro.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//div[contains(@class,'quickfilter-container')]//a[contains(@class,'dropdown-toggle')]"
+	)
+
+	WebUI.waitForElementClickable(dropdownFiltro, 10)
+	WebUI.click(dropdownFiltro)
+	WebUI.delay(1)
+
+	// Seleccionamos la opción deseada
+	TestObject opcionFiltro = new TestObject('opcionFiltro')
+	opcionFiltro.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//a[@class='dropdown-item btn-quickfilter-option px-2' and normalize-space(text())='${opcion}']"
+	)
+
+	WebUI.waitForElementClickable(opcionFiltro, 10)
+	WebUI.click(opcionFiltro)
+	WebUI.delay(1)
+
+	WebUI.comment("✔ Filtro aplicado correctamente: ${opcion}")
+}
+
+
+// ======================================================================
+// FUNCIÓN: Validar columna 'Estado Aprobación' según filtro aplicado
+// ======================================================================
+void validarEstadoAprobacion(String estadoEsperado) {
+
+	// Para "Todos" y "Abiertos" NO validamos nada
+	if (estadoEsperado == "Todos" || estadoEsperado == "Abiertos") {
+		WebUI.comment("✔ No se valida estado para '${estadoEsperado}' (comportamiento esperado)")
+		return
+	}
+
+	// Selector de la columna Estado Aprobación (columna 5)
+	TestObject estados = new TestObject('estados')
+	estados.addProperty(
+		"xpath",
+		ConditionType.EQUALS,
+		"//table//tbody//tr//td[5]//span"
+	)
+
+	List<WebElement> listaEstados = WebUI.findWebElements(estados, 10)
+
+	if (listaEstados.isEmpty()) {
+		WebUI.comment("⚠ No hay filas para validar en la tabla")
+		return
+	}
+
+	// Validamos fila por fila
+	for (WebElement e : listaEstados) {
+		String valor = e.getText().trim()
+
+		if (!valor.equalsIgnoreCase(estadoEsperado)) {
+			WebUI.comment("❌ Estado encontrado: '${valor}' — esperado: '${estadoEsperado}'")
+			WebUI.verifyEqual(valor, estadoEsperado)  // Fuerza el fail
+		}
+	}
+
+	WebUI.comment("✔ Todas las filas coinciden con el estado '${estadoEsperado}'")
+}
+
+
+// ======================================================================
+// TEST CASE: Validación de filtros rápidos de Aprobación
+// ======================================================================
+
+WebUI.comment("==============================================")
+WebUI.comment(" INICIO TEST: Validación de filtros de Aprobación ")
+WebUI.comment("==============================================")
+
+
+// ------------------------------
+// Filtro: Pendientes
+// ------------------------------
+aplicarFiltroAprobacion("Pendientes")
+validarEstadoAprobacion("Pendiente")
+
+
+// ------------------------------
+// Filtro: Aprobados
+// ------------------------------
+aplicarFiltroAprobacion("Aprobados")
+validarEstadoAprobacion("Aprobado")
+
+
+// ------------------------------
+// Filtro: Rechazados
+// ------------------------------
+aplicarFiltroAprobacion("Rechazados")   // ← PLURAL (dropdown)
+validarEstadoAprobacion("Rechazado")    // ← SINGULAR (tabla)
+
+
+
+// ------------------------------
+// Filtro: Abiertos (NO valida)
+// ------------------------------
+aplicarFiltroAprobacion("Abiertos")
+validarEstadoAprobacion("Abiertos")
+
+
+// ------------------------------
+// Filtro: Todos (NO valida)
+// ------------------------------
+aplicarFiltroAprobacion("Todos")
+validarEstadoAprobacion("Todos")
+
+
+WebUI.comment("==============================================")
+WebUI.comment(" ✔ TEST FINALIZADO: Filtros validados correctamente ")
+WebUI.comment("==============================================")
