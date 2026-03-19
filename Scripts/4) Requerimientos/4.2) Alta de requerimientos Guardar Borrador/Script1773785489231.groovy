@@ -7,9 +7,6 @@ import requerimientos.LineasUtils
 import static com.kms.katalon.core.testcase.TestCaseFactory.findTestCase
 import com.kms.katalon.core.model.FailureHandling
 import com.kms.katalon.core.configuration.RunConfiguration
-import org.openqa.selenium.interactions.Actions
-import com.kms.katalon.core.webui.driver.DriverFactory
-import org.openqa.selenium.WebElement
 
 
 // ===============================
@@ -24,28 +21,57 @@ WebUI.callTestCase(findTestCase('1) Logins/1.1) Login Usuario Interno'), [:], Fa
 new utils.UIUtils().cerrarDropdownUsuarioSiEstaAbierto()
 
 
+
 // ===============================
-// 2) ABRIR MENÚ "REQUERIMIENTOS"
+// 1) MOUSEOVER SOBRE EL MENÚ REQUERIMIENTOS
 // ===============================
-TestObject menuRequerimientos = new TestObject()
-menuRequerimientos.addProperty("xpath", ConditionType.EQUALS,
-    "//span[normalize-space(text())='Requerimientos']/parent::a"
+TestObject menuReqNav = new TestObject('menuReqNav')
+menuReqNav.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//li[contains(@class,'nav-item') and contains(@class,'dropdown')]//a[contains(@class,'nav-link') and .//span[normalize-space()='Requerimientos']]"
 )
 
-WebUI.mouseOver(menuRequerimientos)
+WebUI.waitForElementVisible(menuReqNav, 10)
+WebUI.mouseOver(menuReqNav)
 WebUI.delay(1)
 
 
 // ===============================
-// 3) CLIC EN OPCIÓN "REQUERIMIENTOS"
+// 2) FORZAR APERTURA DEL DROPDOWN
 // ===============================
-TestObject opcionRequerimientos = new TestObject()
-opcionRequerimientos.addProperty("xpath", ConditionType.EQUALS,
-    "//a[@class='dropdown-item' and @href='/es/PurchaseRequest/List']"
+String jsOpenReqNav = """
+    document.querySelectorAll("li.nav-item.dropdown.dropend").forEach(function(li){
+        var span = li.querySelector("span.w-md.text-truncate");
+        if(span && span.innerText.trim() === "Requerimientos"){
+            var menu = li.querySelector(".dropdown-menu");
+            if(menu){
+                menu.classList.add("show");
+                menu.style.display = "block";
+            }
+        }
+    });
+"""
+WebUI.executeJavaScript(jsOpenReqNav, null)
+WebUI.delay(1)
+
+
+// ===============================
+// 3) CLICK EN LA OPCIÓN "Requerimientos" (SIN IMPORTAR EL HREF)
+// ===============================
+TestObject opcionReqNav = new TestObject('opcionReqNav')
+opcionReqNav.addProperty(
+    "xpath",
+    ConditionType.EQUALS,
+    "//div[contains(@class,'dropdown-menu')]//a[@class='dropdown-item' and normalize-space()='Requerimientos']"
 )
 
-WebUI.waitForElementClickable(opcionRequerimientos, 10)
-WebUI.click(opcionRequerimientos)
+WebUI.waitForElementClickable(opcionReqNav, 10)
+WebUI.click(opcionReqNav)
+
+WebUI.comment("✔ Se ingresó correctamente a la sección Requerimientos")
+
+
 
 
 // ===============================
