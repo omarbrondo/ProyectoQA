@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.3) Acceder a una compra</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>010ccd9a-3da8-4d9f-b34c-e53356be01fe</testCaseGuid>
+</TestCaseEntity>
