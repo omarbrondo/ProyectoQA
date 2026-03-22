@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.5) Abrir la configuracion de la compra y todas sus secciones</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>6a29a8d7-f79f-4195-b333-53376f5b4c1f</testCaseGuid>
+</TestCaseEntity>
