@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>4.10) Marcar RQ como compra parcial</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>53e0ec87-470a-42e5-a437-a10a9b11d9d0</testCaseGuid>
+</TestCaseEntity>

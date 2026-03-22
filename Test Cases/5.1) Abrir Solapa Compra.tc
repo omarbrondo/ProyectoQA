@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.1) Abrir Solapa Compra</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>70ee9e35-bfca-4c3b-b296-47611fcbc349</testCaseGuid>
+</TestCaseEntity>
