@@ -61,37 +61,6 @@ if (filasDespuesFiltro.size() == 0) {
 }
 
 
-// ===============================
-// 5) BÚSQUEDA POR FILTROS AVANZADOS
-// ===============================
-
-WebUI.navigateToUrl('https://staging.proveedores.intiza.com/es/Tendering/List')
-WebUI.delay(2)
-
-TestObject btnFiltrosAvanzados = new TestObject('btnFiltrosAvanzados')
-btnFiltrosAvanzados.addProperty("xpath", ConditionType.EQUALS, "//a[@href='#filters-collapse' and contains(@class, 'btn-link')]")
-TestObject btnAgregarFiltro = new TestObject('btnAgregarFiltro')
-btnAgregarFiltro.addProperty("xpath", ConditionType.EQUALS, "//a[contains(@class, 'add-filter')]")
-TestObject dropChosenCampo = new TestObject('dropChosenCampo')
-dropChosenCampo.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'chosen-container')]//a[contains(@class, 'chosen-single')]")
-TestObject inputChosenCampo = new TestObject('inputChosenCampo')
-inputChosenCampo.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'chosen-container')]//input[contains(@class, 'chosen-search-input')]")
-TestObject selectOperador = new TestObject('selectOperador')
-selectOperador.addProperty("xpath", ConditionType.EQUALS, "//select[contains(@class, 'drp-operator')]")
-TestObject inputValorFiltro = new TestObject('inputValorFiltro')
-inputValorFiltro.addProperty("xpath", ConditionType.EQUALS, "//input[contains(@class, 'filter-value')]")
-TestObject btnAplicarFiltros = new TestObject('btnAplicarFiltros')
-btnAplicarFiltros.addProperty("xpath", ConditionType.EQUALS, "//button[@type='submit' and contains(normalize-space(.), 'APLICAR FILTROS')]")
-
-WebUI.click(btnFiltrosAvanzados)
-WebUI.click(btnAgregarFiltro)
-WebUI.click(dropChosenCampo)
-WebUI.setText(inputChosenCampo, "Código")
-WebUI.sendKeys(inputChosenCampo, Keys.chord(Keys.ENTER))
-WebUI.selectOptionByValue(selectOperador, "Equal", false)
-WebUI.setText(inputValorFiltro, codigoBuscado)
-WebUI.click(btnAplicarFiltros)
-WebUI.delay(3)
 
 
 // ===============================
@@ -237,3 +206,70 @@ if (nuevoCodigoClonado != "" && nuevoCodigoClonado != null) {
 }
 
 WebUI.delay(1)
+
+
+// ===============================
+// 9) ELIMINAR LA COMPRA CLONADA
+// ===============================
+
+// --- 9.1) TRUCO: Clic en "SIN INICIAR" para cerrar menús superpuestos ---
+TestObject badgeSinIniciar = new TestObject('badgeSinIniciar')
+badgeSinIniciar.addProperty("xpath", ConditionType.EQUALS, "//strong[normalize-space(text())='SIN INICIAR']")
+
+WebUI.waitForElementVisible(badgeSinIniciar, 10)
+WebUI.click(badgeSinIniciar)
+WebUI.delay(1) // Pequeña pausa para que el menú del usuario desaparezca
+WebUI.comment("✔ Se hizo clic en el estado para despejar la vista y habilitar el ellipsis.")
+
+// --- 9.2) Clic en el menú Ellipsis ---
+TestObject btnMenuEllipsisEliminar = new TestObject('btnMenuEllipsisEliminar')
+btnMenuEllipsisEliminar.addProperty("id", ConditionType.EQUALS, "menu-ellipsis")
+
+WebUI.waitForElementClickable(btnMenuEllipsisEliminar, 5)
+WebUI.click(btnMenuEllipsisEliminar)
+
+// --- 9.3) Elegir la opción "Eliminar compra" ---
+TestObject opcionEliminarCompra = new TestObject('opcionEliminarCompra')
+opcionEliminarCompra.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'show')]//a[contains(@class, 'text-danger') and contains(normalize-space(.), 'Eliminar compra')]")
+
+WebUI.waitForElementPresent(opcionEliminarCompra, 5)
+// Usamos JS por si la animación del menú vuelve a molestar
+WebElement elEliminar = WebUI.findWebElement(opcionEliminarCompra)
+WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(elEliminar))
+
+WebUI.comment("✔ Se seleccionó 'Eliminar compra', esperando el modal...")
+
+// --- 9.4) Confirmar en el modal ---
+TestObject btnConfirmarEliminar = new TestObject('btnConfirmarEliminar')
+// Buscamos el botón rojo dentro del modal
+btnConfirmarEliminar.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content')]//button[@type='submit' and contains(@class, 'btn-danger') and normalize-space(text())='Eliminar']")
+
+WebUI.waitForElementVisible(btnConfirmarEliminar, 10)
+WebUI.click(btnConfirmarEliminar)
+WebUI.comment("✔ Se confirmó la eliminación en el modal.")
+
+// ===============================
+// 10) VALIDAR Y CERRAR GROWL DE ÉXITO ("Eliminado")
+// ===============================
+
+TestObject growlEliminado = new TestObject('growlEliminado')
+growlEliminado.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//div[contains(@class, 'alert-success')]")
+
+TestObject btnCerrarGrowl = new TestObject('btnCerrarGrowl')
+btnCerrarGrowl.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//button[@data-bs-dismiss='alert']")
+
+// Esperamos que aparezca el Growl
+WebUI.waitForElementVisible(growlEliminado, 15)
+
+// Validamos el texto
+String textoGrowl = WebUI.getText(growlEliminado).trim()
+if (textoGrowl.contains("Eliminado")) {
+	WebUI.comment("✔ Confirmado: Se visualizó el mensaje de éxito '" + textoGrowl + "'.")
+} else {
+	throw new com.kms.katalon.core.exception.StepFailedException("❌ ERROR: Se esperaba el mensaje 'Eliminado' pero apareció: " + textoGrowl)
+}
+
+// Cerramos el Growl
+WebUI.waitForElementClickable(btnCerrarGrowl, 5)
+WebUI.click(btnCerrarGrowl)
+WebUI.comment("✔ Se cerró el growl de éxito. ¡Test Case completado!")

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7) Clonar una compra y configurarla</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>3f1c8e15-085a-4cdf-9b57-a590c8db6aa4</testCaseGuid>
+</TestCaseEntity>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>5.6) Clonar una compra</name>
+   <name>5.6) Clonar una compra y eliminarla</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
