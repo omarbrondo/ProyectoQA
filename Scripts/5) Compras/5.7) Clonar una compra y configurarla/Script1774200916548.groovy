@@ -407,3 +407,121 @@ WebUI.comment("✔ Se hizo clic en 'Guardar' etapa. Esperando que se procese..."
 
 // Damos un tiempito para que el modal se cierre y la grilla de etapas se actualice
 WebUI.delay(3)
+
+
+// ===============================
+// 13) VALIDAR Y CERRAR GROWL DE "ETAPA CREADA"
+// ===============================
+
+TestObject growlEtapa = new TestObject('growlEtapa')
+growlEtapa.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//div[contains(@class, 'alert-success')]")
+
+TestObject btnCerrarGrowlEtapa = new TestObject('btnCerrarGrowlEtapa')
+btnCerrarGrowlEtapa.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//button[@data-bs-dismiss='alert']")
+
+WebUI.waitForElementVisible(growlEtapa, 10)
+String textoGrowlEtapa = WebUI.getText(growlEtapa).trim()
+
+if (textoGrowlEtapa.contains("Cambios guardados")) {
+	WebUI.comment("✔ Confirmado: Se guardó la etapa y apareció el mensaje.")
+} else {
+	WebUI.comment("⚠ El mensaje fue distinto al esperado: " + textoGrowlEtapa)
+}
+
+WebUI.waitForElementClickable(btnCerrarGrowlEtapa, 5)
+WebUI.click(btnCerrarGrowlEtapa)
+WebUI.delay(1) // Pausa para asegurar que la UI quedó limpia
+
+
+// ===============================
+// 14) MOUSEOVER EN "ETAPA QA" Y CLIC EN EDITAR
+// ===============================
+
+// --- 14.1) Identificar la fila exacta que dice "Etapa QA" ---
+TestObject filaEtapaQA = new TestObject('filaEtapaQA')
+filaEtapaQA.addProperty("xpath", ConditionType.EQUALS, "//tr[contains(@class, 'stage-row') and .//span[normalize-space(text())='Etapa QA']]")
+
+WebUI.waitForElementVisible(filaEtapaQA, 10)
+
+// Hacemos el MouseOver para que se desplieguen los botones ocultos
+WebUI.mouseOver(filaEtapaQA)
+WebUI.delay(1) // Le damos tiempo a la animación de Bootstrap/CSS para que muestre los botones
+
+
+// --- 14.2) Clic en el lapicito (Editar) ---
+TestObject btnEditarEtapa = new TestObject('btnEditarEtapa')
+// Apuntamos directo a la etiqueta <a> que tiene el ícono del lápiz, DENTRO de la fila de Etapa QA
+btnEditarEtapa.addProperty("xpath", ConditionType.EQUALS, "//tr[contains(@class, 'stage-row') and .//span[normalize-space(text())='Etapa QA']]//a[contains(@class, 'btn-edit-stage') and .//i[contains(@class, 'fa-pen')]]")
+
+// Para evitar cualquier fallo del Hover, inyectamos el clic con JS
+WebUI.waitForElementPresent(btnEditarEtapa, 5)
+WebElement elPenEditar = WebUI.findWebElement(btnEditarEtapa)
+WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(elPenEditar))
+
+WebUI.comment("✔ ¡Hackmate! Se hizo clic en el botón de edición de 'Etapa QA' a prueba de fallos.")
+
+
+// Esperamos que el modal de edición vuelva a aparecer
+WebUI.delay(2)
+
+// ===============================
+// 15) ELIMINAR LA "ETAPA QA"
+// ===============================
+
+// --- 15.1) Clic en el botón "Eliminar" (ícono de tacho de basura) dentro del primer modal ---
+TestObject btnEliminarEtapaModal = new TestObject('btnEliminarEtapaModal')
+// Buscamos el enlace con clase 'btn-link' y 'text-primary' que abre el modal de borrado
+btnEliminarEtapaModal.addProperty("xpath", ConditionType.EQUALS, "//a[@data-bs-target='#modal-delete-stage' and contains(@class, 'text-primary')]")
+
+WebUI.waitForElementClickable(btnEliminarEtapaModal, 10)
+WebUI.click(btnEliminarEtapaModal)
+WebUI.comment("✔ Se hizo clic en el enlace 'Eliminar' del modal de edición.")
+
+
+// --- 15.2) Validar el texto del segundo modal (Confirmación) ---
+TestObject textoConfirmacionEliminar = new TestObject('textoConfirmacionEliminar')
+// Buscamos el párrafo dentro del modal-body del segundo modal
+textoConfirmacionEliminar.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content')]//div[@class='modal-body']//p[contains(text(), '¿Está seguro que quiere eliminar')]")
+
+WebUI.waitForElementVisible(textoConfirmacionEliminar, 5)
+String mensajeBorrado = WebUI.getText(textoConfirmacionEliminar).trim()
+
+if (mensajeBorrado.equals("¿Está seguro que quiere eliminar Etapa QA?")) {
+	WebUI.comment("✔ Confirmado: El modal pregunta exactamente por la 'Etapa QA'.")
+} else {
+	throw new com.kms.katalon.core.exception.StepFailedException("❌ ERROR: El texto de confirmación no es el esperado. Se encontró: " + mensajeBorrado)
+}
+
+
+// --- 15.3) Confirmar la eliminación (Botón rojo) ---
+TestObject btnConfirmarBorradoEtapa = new TestObject('btnConfirmarBorradoEtapa')
+btnConfirmarBorradoEtapa.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content')]//button[@type='submit' and contains(@class, 'btn-danger') and normalize-space(.)='Eliminar']")
+
+WebUI.waitForElementClickable(btnConfirmarBorradoEtapa, 5)
+WebUI.click(btnConfirmarBorradoEtapa)
+WebUI.comment("✔ Se hizo clic en el botón rojo 'Eliminar'.")
+
+
+// ===============================
+// 16) VALIDAR Y CERRAR GROWL DE "ELIMINADO"
+// ===============================
+
+TestObject growlEtapaEliminada = new TestObject('growlEtapaEliminada')
+growlEtapaEliminada.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//div[contains(@class, 'alert-success')]")
+
+TestObject btnCerrarGrowlEtapaEliminada = new TestObject('btnCerrarGrowlEtapaEliminada')
+btnCerrarGrowlEtapaEliminada.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//button[@data-bs-dismiss='alert']")
+
+WebUI.waitForElementVisible(growlEtapaEliminada, 10)
+String textoGrowlEliminado = WebUI.getText(growlEtapaEliminada).trim()
+
+if (textoGrowlEliminado.contains("Eliminado")) {
+	WebUI.comment("✔ Confirmado: Se eliminó la etapa y apareció el mensaje 'Eliminado'.")
+} else {
+	throw new com.kms.katalon.core.exception.StepFailedException("❌ ERROR: El mensaje final no fue 'Eliminado'. Se encontró: " + textoGrowlEliminado)
+}
+
+WebUI.waitForElementClickable(btnCerrarGrowlEtapaEliminada, 5)
+WebUI.click(btnCerrarGrowlEtapaEliminada)
+WebUI.delay(1)
+WebUI.comment("✔ Flujo de Alta y Baja de Etapa QA completado con éxito.")
