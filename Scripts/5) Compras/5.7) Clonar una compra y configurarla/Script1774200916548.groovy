@@ -16,6 +16,7 @@ import org.openqa.selenium.WebElement
 import java.util.Arrays
 import java.util.Date
 import java.util.Random
+import java.util.Collections
 
 
 // 0) Acceder a compras
@@ -525,3 +526,351 @@ WebUI.waitForElementClickable(btnCerrarGrowlEtapaEliminada, 5)
 WebUI.click(btnCerrarGrowlEtapaEliminada)
 WebUI.delay(1)
 WebUI.comment("✔ Flujo de Alta y Baja de Etapa QA completado con éxito.")
+
+// ===============================
+// 17) NAVEGAR A REQUERIMIENTOS Y AGREGAR UNO NUEVO
+// ===============================
+
+// --- 17.1) Clic en el menú lateral "Requerimientos" ---
+TestObject menuRequerimientos = new TestObject('menuRequerimientos')
+// Buscamos el enlace dentro del menú lateral (nav-sidebar)
+menuRequerimientos.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'nav-sidebar')]//a[contains(normalize-space(.), 'Requerimientos')]")
+
+WebUI.waitForElementClickable(menuRequerimientos, 10)
+WebUI.click(menuRequerimientos)
+WebUI.comment("✔ Navegando a la sección de 'Requerimientos'...")
+
+// Esperamos que cargue la nueva pantalla
+WebUI.waitForPageLoad(10)
+WebUI.delay(2)
+
+
+// --- 17.2) Clic en el botón "Agregar requerimiento" ---
+TestObject btnAgregarRequerimiento = new TestObject('btnAgregarRequerimiento')
+// Apuntamos directo a la clase específica que me pasaste en el HTML
+btnAgregarRequerimiento.addProperty("xpath", ConditionType.EQUALS, "//a[contains(@class, 'btn-add-purchaserequestline') and contains(normalize-space(.), 'Agregar requerimiento')]")
+
+WebUI.waitForElementClickable(btnAgregarRequerimiento, 10)
+WebUI.click(btnAgregarRequerimiento)
+WebUI.comment("✔ Se hizo clic en 'Agregar requerimiento'.")
+
+// Le damos un segundito para que reaccione (seguramente se abra un modal o una tabla de selección)
+WebUI.delay(2)
+
+
+
+// ===============================
+// 18) SELECCIONAR REQUERIMIENTOS AL AZAR Y ASOCIAR
+// ===============================
+
+// --- 18.1) Esperar que el modal y la tabla carguen ---
+TestObject modalRequerimientos = new TestObject('modalRequerimientos')
+modalRequerimientos.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content') and .//h3[contains(text(), 'Seleccione una opción')]]")
+
+WebUI.waitForElementVisible(modalRequerimientos, 15)
+WebUI.delay(2) // Breve pausa para que desaparezca el "Cargando..." si es que estaba
+
+
+// --- 18.2) Obtener todos los checkboxes de requerimientos (líneas) ---
+WebDriver driverReq = DriverFactory.getWebDriver()
+// Buscamos específicamente los check de las líneas, no los del encabezado del acordeón
+List<WebElement> checksRequerimientos = driverReq.findElements(By.xpath("//input[contains(@class, 'prline-checkbox')]"))
+
+if (checksRequerimientos.size() >= 2) {
+	// Mezclamos la lista al azar
+	Collections.shuffle(checksRequerimientos)
+	
+	// Hacemos clic en los primeros dos de la lista mezclada
+	for (int i = 0; i < 2; i++) {
+		WebElement check = checksRequerimientos.get(i)
+		// Usamos JS click para evitar que el scroll del modal bloquee el clic
+		WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(check))
+	}
+	WebUI.comment("✔ Se seleccionaron 2 requerimientos al azar exitosamente.")
+	
+} else if (checksRequerimientos.size() == 1) {
+	// Por si justo la prueba corre en un entorno donde quedó solo 1 requerimiento
+	WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(checksRequerimientos.get(0)))
+	WebUI.comment("⚠ Solo había 1 requerimiento disponible. Se seleccionó ese.")
+} else {
+	throw new com.kms.katalon.core.exception.StepFailedException("❌ ERROR: No hay requerimientos disponibles para asociar en esta vista.")
+}
+
+
+// --- 18.3) Hacer clic en "Asociar" ---
+TestObject btnAsociar = new TestObject('btnAsociar')
+btnAsociar.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content')]//button[contains(@class, 'btn-submit-lines') and contains(normalize-space(.), 'Asociar')]")
+
+// Al seleccionar los check, el botón pierde el 'disabled', así que lo esperamos clickeable
+WebUI.waitForElementClickable(btnAsociar, 5)
+WebUI.click(btnAsociar)
+
+WebUI.comment("✔ Se hizo clic en 'Asociar'. Esperando que se agreguen a la licitación...")
+
+// Esperamos que se cierre el modal y se actualice la pantalla de fondo
+WebUI.waitForPageLoad(10)
+WebUI.delay(3)
+
+
+// ===============================
+// 19) VALIDAR Y CERRAR GROWL DE "ENVIADO"
+// ===============================
+
+TestObject growlEnviado = new TestObject('growlEnviado')
+growlEnviado.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//div[contains(@class, 'alert-success')]")
+
+TestObject btnCerrarGrowlEnviado = new TestObject('btnCerrarGrowlEnviado')
+btnCerrarGrowlEnviado.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'growl')]//button[@data-bs-dismiss='alert']")
+
+WebUI.waitForElementVisible(growlEnviado, 10)
+String textoGrowlEnviado = WebUI.getText(growlEnviado).trim()
+
+if (textoGrowlEnviado.contains("Enviado") || textoGrowlEnviado.contains("Cambios guardados")) {
+	WebUI.comment("✔ Confirmado: Apareció el mensaje de éxito de la asociación.")
+}
+
+WebUI.waitForElementClickable(btnCerrarGrowlEnviado, 5)
+WebUI.click(btnCerrarGrowlEnviado)
+WebUI.delay(1)
+
+
+// ===============================
+// 20) ELIMINAR UN REQUERIMIENTO DE LA TABLA
+// ===============================
+
+// --- 20.1) Identificar la primera fila y atrapar su ID ---
+WebDriver driverReqList = DriverFactory.getWebDriver()
+List<WebElement> filasRequerimientos = driverReqList.findElements(By.xpath("//tr[contains(@class, 'tr-purchaserequestline-select')]"))
+
+if (filasRequerimientos.size() == 0) {
+	throw new com.kms.katalon.core.exception.StepFailedException("❌ ERROR: La tabla de requerimientos está vacía, no hay nada para eliminar.")
+}
+
+// Guardamos el data-id del primer registro para validarlo después
+String idAEliminar = filasRequerimientos.get(0).getAttribute("data-id")
+WebUI.comment("✔ Se eligió para eliminar el requerimiento con ID: " + idAEliminar)
+
+// --- 20.2) MouseOver y clic en el tacho de basura ---
+TestObject filaTarget = new TestObject('filaTarget')
+filaTarget.addProperty("xpath", ConditionType.EQUALS, "//tr[@data-id='${idAEliminar}']")
+
+// Hacemos hover sobre la fila
+WebUI.mouseOver(filaTarget)
+WebUI.delay(1)
+
+TestObject btnBasurero = new TestObject('btnBasurero')
+btnBasurero.addProperty("xpath", ConditionType.EQUALS, "//tr[@data-id='${idAEliminar}']//a[contains(@class, 'btn-delete-purchaserequestline')]")
+
+// ¡JS al rescate de nuevo!
+WebUI.waitForElementPresent(btnBasurero, 5)
+WebElement elBasurero = WebUI.findWebElement(btnBasurero)
+WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(elBasurero))
+WebUI.comment("✔ Se hizo clic en el icono de eliminar (Basurero).")
+
+
+// --- 20.3) Confirmar en el modal ---
+TestObject btnConfirmarEliminarReq = new TestObject('btnConfirmarEliminarReq')
+btnConfirmarEliminarReq.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content')]//button[@type='submit' and contains(@class, 'btn-danger') and normalize-space(.)='Eliminar']")
+
+WebUI.waitForElementClickable(btnConfirmarEliminarReq, 10)
+WebUI.click(btnConfirmarEliminarReq)
+WebUI.comment("✔ Se confirmó la eliminación en el modal.")
+
+
+// ===============================
+// 21) VERIFICAR QUE EL REGISTRO DESAPARECIÓ DE LA TABLA
+// ===============================
+
+// Esperamos que la grilla se actualice (le damos un margen de tiempo)
+WebUI.delay(3)
+
+// Volvemos a buscar en el DOM a ver si la fila con ese ID sigue existiendo
+List<WebElement> comprobacionFilas = driverReqList.findElements(By.xpath("//tr[@data-id='${idAEliminar}']"))
+
+if (comprobacionFilas.size() == 0) {
+	WebUI.comment("✔ ¡ÉXITO TOTAL! El requerimiento " + idAEliminar + " ya no existe en la tabla.")
+} else {
+	throw new com.kms.katalon.core.exception.StepFailedException("❌ ERROR: El requerimiento no se eliminó de la tabla (o la vista no se refrescó).")
+}
+
+// ===============================
+// 22) NAVEGAR A FORMULARIOS DE OFERTA
+// ===============================
+
+TestObject menuFormulariosOferta = new TestObject('menuFormulariosOferta')
+// Buscamos el enlace dentro del menú lateral (nav-sidebar)
+menuFormulariosOferta.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'nav-sidebar')]//a[contains(normalize-space(.), 'Formularios de oferta')]")
+
+WebUI.waitForElementClickable(menuFormulariosOferta, 10)
+WebUI.click(menuFormulariosOferta)
+WebUI.comment("✔ Navegando a la sección de 'Formularios de oferta'...")
+
+// Esperamos que cargue la nueva pantalla
+WebUI.waitForPageLoad(10)
+WebUI.delay(2)
+
+
+import org.openqa.selenium.WebElement
+import java.util.Arrays
+import java.util.Random
+import org.openqa.selenium.Keys
+
+// ===============================
+// 23) CREAR NUEVO FORMULARIO Y LLENAR DATOS BÁSICOS
+// ===============================
+
+TestObject btnNuevoFormulario = new TestObject('btnNuevoFormulario')
+btnNuevoFormulario.addProperty("xpath", ConditionType.EQUALS, "//a[contains(@class, 'btn-edit-form') and contains(normalize-space(.), 'Nuevo formulario')]")
+
+WebUI.waitForElementClickable(btnNuevoFormulario, 15)
+WebUI.click(btnNuevoFormulario)
+WebUI.comment("✔ Se abrió el modal de Nuevo formulario.")
+
+// --- Completar Título y Descripción ---
+TestObject inputTitle = new TestObject('inputTitle')
+inputTitle.addProperty("id", ConditionType.EQUALS, "Title")
+WebUI.waitForElementVisible(inputTitle, 20) 
+
+TestObject textareaDesc = new TestObject('textareaDesc')
+textareaDesc.addProperty("id", ConditionType.EQUALS, "Description")
+
+WebUI.setText(inputTitle, "Formulario QA")
+WebUI.setText(textareaDesc, "Formulario QA")
+
+// --- Seleccionar Etapa al azar ---
+TestObject selectEtapaForm = new TestObject('selectEtapaForm')
+selectEtapaForm.addProperty("id", ConditionType.EQUALS, "TenderingSupplierStageId")
+
+WebDriver driverForm = DriverFactory.getWebDriver()
+List<WebElement> opcionesEtapaForm = driverForm.findElements(By.xpath("//select[@id='TenderingSupplierStageId']/option"))
+if (opcionesEtapaForm.size() > 1) {
+    int indexAzarEtapa = new Random().nextInt(opcionesEtapaForm.size() - 1) + 1
+    WebUI.selectOptionByIndex(selectEtapaForm, indexAzarEtapa)
+}
+
+// --- Tildar los checkboxes ---
+TestObject chkSupplierCanEdit = new TestObject('chkSupplierCanEdit')
+chkSupplierCanEdit.addProperty("id", ConditionType.EQUALS, "SupplierCanEdit")
+TestObject chkFormTypeReq = new TestObject('chkFormTypeReq')
+chkFormTypeReq.addProperty("id", ConditionType.EQUALS, "chk-formtype-purchaserequests")
+TestObject chkClosedEnvelope = new TestObject('chkClosedEnvelope')
+chkClosedEnvelope.addProperty("id", ConditionType.EQUALS, "ClosedEnvelope")
+
+WebUI.check(chkSupplierCanEdit)
+WebUI.check(chkFormTypeReq)
+WebUI.check(chkClosedEnvelope)
+WebUI.comment("✔ Checkboxes marcados.")
+
+
+// ===============================
+// 24) VALIDACIONES NEGATIVAS DE SOBRE CERRADO
+// ===============================
+
+TestObject btnGuardarForm = new TestObject('btnGuardarForm')
+btnGuardarForm.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content')]//button[@type='submit' and contains(@class, 'btn-submit-form')]")
+
+// --- VALIDACIÓN 1: Tipo de Apertura vacío ---
+WebUI.click(btnGuardarForm)
+TestObject growlInvalido = new TestObject('growlInvalido')
+growlInvalido.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'alert-warning') and contains(normalize-space(.), 'Se ingresaron datos inválidos')]")
+
+WebUI.waitForElementVisible(growlInvalido, 5)
+WebUI.comment("✔ Validación 1 exitosa: Apareció 'Se ingresaron datos inválidos'.")
+
+TestObject btnCerrarWarning = new TestObject('btnCerrarWarning')
+btnCerrarWarning.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'alert-warning')]//button[@data-bs-dismiss='alert']")
+WebElement elCerrarWarn1 = WebUI.findWebElement(btnCerrarWarning)
+WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(elCerrarWarn1))
+WebUI.delay(1)
+
+
+// --- VALIDACIÓN 2: Roles vacíos ---
+TestObject selectApertura = new TestObject('selectApertura')
+selectApertura.addProperty("id", ConditionType.EQUALS, "ClosedEnvelopeType")
+// Seleccionamos Manual explícitamente para que pida Roles y Etapa
+WebUI.selectOptionByValue(selectApertura, "Manual", false)
+
+WebUI.click(btnGuardarForm)
+TestObject growlRoles = new TestObject('growlRoles')
+growlRoles.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'alert-warning') and contains(normalize-space(.), 'Roles y Usuarios con permiso para abrir el Sobre')]")
+
+WebUI.waitForElementVisible(growlRoles, 5)
+WebUI.comment("✔ Validación 2 exitosa: Apareció alerta de Roles obligatorios.")
+
+WebElement elCerrarWarn2 = WebUI.findWebElement(btnCerrarWarning)
+WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(elCerrarWarn2))
+WebUI.delay(1)
+
+
+// --- VALIDACIÓN 3: Etapa de apertura vacía ---
+TestObject inputChosenRoles = new TestObject('inputChosenRoles')
+// Buscamos el input del Multi-Select Chosen de Roles
+inputChosenRoles.addProperty("xpath", ConditionType.EQUALS, "//select[@name='CanOpenClosedEnvelopeIdList']/following-sibling::div//input[contains(@class, 'chosen-search-input')]")
+
+WebUI.click(inputChosenRoles)
+WebUI.delay(1)
+WebUI.sendKeys(inputChosenRoles, Keys.chord(Keys.ARROW_DOWN, Keys.ENTER)) // Elegimos el primer rol
+WebUI.delay(1)
+
+WebUI.click(btnGuardarForm)
+TestObject growlEtapaApertura = new TestObject('growlEtapaApertura')
+growlEtapaApertura.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'alert-warning') and contains(normalize-space(.), 'Etapa en la que se habilita la apertura del sobre')]")
+
+WebUI.waitForElementVisible(growlEtapaApertura, 5)
+WebUI.comment("✔ Validación 3 exitosa: Apareció alerta de Etapa obligatoria.")
+
+WebElement elCerrarWarn3 = WebUI.findWebElement(btnCerrarWarning)
+WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(elCerrarWarn3))
+WebUI.delay(1)
+
+
+// ===============================
+// 25) COMPLETAR ÚLTIMO CAMPO Y GUARDAR CON ÉXITO
+// ===============================
+
+// --- 25.1) Abrir el dropdown de la Etapa ---
+TestObject dropdownChosenEtapa = new TestObject('dropdownChosenEtapa')
+dropdownChosenEtapa.addProperty("xpath", ConditionType.EQUALS, "//div[@id='ClosedEnvelopeTenderingSupplierStageId_chosen']//a[contains(@class, 'chosen-single')]")
+
+WebUI.waitForElementClickable(dropdownChosenEtapa, 5)
+WebUI.click(dropdownChosenEtapa)
+WebUI.delay(1) // Esperamos que se despliegue el menú
+
+// --- 25.2) Seleccionar usando el teclado (¡A prueba de fallos!) ---
+TestObject inputSearchEtapa = new TestObject('inputSearchEtapa')
+// Apuntamos al input de búsqueda que aparece al abrir el dropdown
+inputSearchEtapa.addProperty("xpath", ConditionType.EQUALS, "//div[@id='ClosedEnvelopeTenderingSupplierStageId_chosen']//input[contains(@class, 'chosen-search-input')]")
+
+WebUI.waitForElementVisible(inputSearchEtapa, 5)
+// Flecha Abajo salta el "Seleccionar" y pasa a la primera Etapa. El Enter confirma y cierra el menú.
+WebUI.sendKeys(inputSearchEtapa, Keys.chord(Keys.ARROW_DOWN, Keys.ENTER))
+WebUI.comment("✔ Se completó la Etapa de apertura usando el teclado. El menú debería estar cerrado.")
+WebUI.delay(1) // Le damos tiempo a la animación de cierre
+
+
+// --- 25.3) Clic final para guardar ---
+TestObject btnGuardarFormulario = new TestObject('btnGuardarFormulario')
+btnGuardarFormulario.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'modal-content')]//button[@type='submit' and contains(@class, 'btn-primary') and contains(normalize-space(.), 'Guardar')]")
+
+WebUI.waitForElementClickable(btnGuardarFormulario, 5)
+WebUI.click(btnGuardarFormulario)
+WebUI.comment("✔ Formulario completado correctamente. Guardando...")
+
+
+// --- 25.4) Validar Growl de Éxito ---
+TestObject growlExitoForm = new TestObject('growlExitoForm')
+growlExitoForm.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'alert-success') and contains(normalize-space(.), 'Guardado')]")
+
+WebUI.waitForElementVisible(growlExitoForm, 10)
+WebUI.comment("✔ ¡Éxito! Formulario guardado correctamente.")
+
+TestObject btnCerrarGrowlExitoFormulario = new TestObject('btnCerrarGrowlExitoFormulario')
+btnCerrarGrowlExitoFormulario.addProperty("xpath", ConditionType.EQUALS, "//div[contains(@class, 'alert-success')]//button[@data-bs-dismiss='alert']")
+
+// Cerramos usando JS por seguridad, por si hay algo más superpuesto
+WebElement elCerrarExito = WebUI.findWebElement(btnCerrarGrowlExitoFormulario)
+WebUI.executeJavaScript("arguments[0].click();", Arrays.asList(elCerrarExito))
+
+// Damos tiempo a que se recargue la tabla de fondo
+WebUI.waitForPageLoad(10)
+WebUI.delay(2)
