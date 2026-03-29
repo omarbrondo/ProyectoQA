@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.4) INGRESAR A CONFIGURACIÓN DE LA COMPRA CLONADA</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>c23302ac-5bf7-40d0-a244-379be47c1f77</testCaseGuid>
+</TestCaseEntity>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.1) EXTRAER CÓDIGO AL AZAR Y PROBAR BUSCADOR</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>b7bfa96d-ad3e-43de-ac11-a12a4f1f9d86</testCaseGuid>
+</TestCaseEntity>

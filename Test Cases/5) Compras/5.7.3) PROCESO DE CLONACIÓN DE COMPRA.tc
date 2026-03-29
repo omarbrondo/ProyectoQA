@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.3) PROCESO DE CLONACIÓN DE COMPRA</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>c7fdef89-283e-47af-93b3-07c7916e4d62</testCaseGuid>
+</TestCaseEntity>

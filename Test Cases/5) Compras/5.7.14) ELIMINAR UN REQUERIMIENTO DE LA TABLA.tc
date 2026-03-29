@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.14) ELIMINAR UN REQUERIMIENTO DE LA TABLA</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>40e338e4-d7bb-4a0a-b6a0-6031011126fe</testCaseGuid>
+</TestCaseEntity>

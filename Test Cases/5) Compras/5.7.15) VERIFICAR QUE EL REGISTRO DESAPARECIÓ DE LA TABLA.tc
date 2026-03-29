@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.15) VERIFICAR QUE EL REGISTRO DESAPARECIÓ DE LA TABLA</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>e45bf5cd-5db1-4c87-a758-2f9bd0056ca8</testCaseGuid>
+</TestCaseEntity>

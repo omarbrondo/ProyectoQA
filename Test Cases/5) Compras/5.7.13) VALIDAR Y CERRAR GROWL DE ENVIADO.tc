@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.13) VALIDAR Y CERRAR GROWL DE ENVIADO</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>27514e58-268e-4ceb-ac2c-31eec878e890</testCaseGuid>
+</TestCaseEntity>

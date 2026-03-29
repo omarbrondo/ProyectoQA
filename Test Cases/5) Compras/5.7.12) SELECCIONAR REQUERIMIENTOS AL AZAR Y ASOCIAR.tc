@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.12) SELECCIONAR REQUERIMIENTOS AL AZAR Y ASOCIAR</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>a5d617bd-0696-410f-b580-86548558b8a2</testCaseGuid>
+</TestCaseEntity>

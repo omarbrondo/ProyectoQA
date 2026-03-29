@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.16) CREAR NUEVO FORMULARIO Y LLENAR DATOS BÁSICOS</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>729711c0-4936-44b5-b82b-ba69a5975ddc</testCaseGuid>
+</TestCaseEntity>
