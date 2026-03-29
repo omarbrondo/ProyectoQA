@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.19) CREAR CAMPO EN FORMULARIO DE EVALUACION</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>c199d41e-3f6f-4448-8db4-30fad542a6c8</testCaseGuid>
+</TestCaseEntity>
