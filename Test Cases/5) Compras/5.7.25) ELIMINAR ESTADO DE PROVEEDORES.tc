@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.25) ELIMINAR ESTADO DE PROVEEDORES</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>d69858ee-f050-4d3f-9c0c-9c359039225e</testCaseGuid>
+</TestCaseEntity>

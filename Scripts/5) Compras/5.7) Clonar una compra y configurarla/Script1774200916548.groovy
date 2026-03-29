@@ -57,7 +57,7 @@ WebUI.callTestCase(findTestCase('5) Compras/5.7.17) NAVEGAR A FORMULARIOS DE EVA
 WebUI.callTestCase(findTestCase('5) Compras/5.7.18) CREAR FORMULARIO DE EVALUACION'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.19) CREAR CAMPO EN FORMULARIO DE EVALUACION'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.20) ELIMINAR FORMULARIO DE EVALUACION'), [:], FailureHandling.STOP_ON_FAILURE)
-*/
+
 // --- Configuración de Evaluadores ---
 WebUI.callTestCase(findTestCase('5) Compras/5.7.21) NAVEGAR A EVALUADORES Y CREAR GRUPO'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.22) COMPLETAR NUEVO GRUPO DE EVALUADORES'), [:], FailureHandling.STOP_ON_FAILURE)
@@ -66,3 +66,11 @@ WebUI.callTestCase(findTestCase('5) Compras/5.7.23) ELIMINAR GRUPO DE EVALUADORE
 //Se vuelve a ejecutar para dejar evaluadores guardados
 WebUI.callTestCase(findTestCase('5) Compras/5.7.21) NAVEGAR A EVALUADORES Y CREAR GRUPO'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.22) COMPLETAR NUEVO GRUPO DE EVALUADORES'), [:], FailureHandling.STOP_ON_FAILURE) 
+
+// --- Configuración de Evaluadores ---
+
+WebUI.callTestCase(findTestCase('5) Compras/5.7.24) NAVEGAR A ESTADOS Y CREAR NUEVO'), [:], FailureHandling.STOP_ON_FAILURE)
+WebUI.callTestCase(findTestCase('5) Compras/5.7.25) ELIMINAR ESTADO DE PROVEEDORES'), [:], FailureHandling.STOP_ON_FAILURE)
+*/
+// --- Configuración de Evaluadores ---
+WebUI.callTestCase(findTestCase('5) Compras/5.7.26) NAVEGAR A ACTAS Y AGREGAR ASOCIACION'), [:], FailureHandling.STOP_ON_FAILURE)

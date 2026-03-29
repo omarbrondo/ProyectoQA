@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.26) NAVEGAR A ACTAS Y AGREGAR ASOCIACION</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>598cc87f-f4d8-400b-8085-bd8ec9981a05</testCaseGuid>
+</TestCaseEntity>
