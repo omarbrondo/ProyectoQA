@@ -51,10 +51,13 @@ WebUI.callTestCase(findTestCase('5) Compras/5.7.14) ELIMINAR UN REQUERIMIENTO DE
 // --- Configuración de Formularios de Oferta ---
 WebUI.callTestCase(findTestCase('5) Compras/5.7.15) NAVEGAR A FORMULARIOS DE OFERTA'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.16) CREAR NUEVO FORMULARIO Y LLENAR DATOS BÁSICOS'), [:], FailureHandling.STOP_ON_FAILURE)
-*/
+
 // --- Configuración de Formularios de Evaluacion ---
 WebUI.callTestCase(findTestCase('5) Compras/5.7.17) NAVEGAR A FORMULARIOS DE EVALUACIÓN'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.18) CREAR FORMULARIO DE EVALUACION'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.19) CREAR CAMPO EN FORMULARIO DE EVALUACION'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.20) ELIMINAR FORMULARIO DE EVALUACION'), [:], FailureHandling.STOP_ON_FAILURE)
-
+*/
+// --- Configuración de Evaluadores ---
+WebUI.callTestCase(findTestCase('5) Compras/5.7.21) NAVEGAR A EVALUADORES Y CREAR GRUPO'), [:], FailureHandling.STOP_ON_FAILURE)
+WebUI.callTestCase(findTestCase('5) Compras/5.7.22) COMPLETAR NUEVO GRUPO DE EVALUADORES'), [:], FailureHandling.STOP_ON_FAILURE)
