@@ -5,7 +5,7 @@ import com.kms.katalon.core.context.TestCaseContext
 import com.kms.katalon.core.context.TestSuiteContext
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.configuration.RunConfiguration
-import com.kms.katalon.core.webui.driver.DriverFactory // <-- NUEVO: Para saber el navegador
+import com.kms.katalon.core.webui.driver.DriverFactory 
 import java.io.FileOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
@@ -20,8 +20,8 @@ import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Element
 import com.itextpdf.text.Image
 import com.itextpdf.text.Chunk
-import com.itextpdf.text.pdf.PdfPTable // <-- NUEVO: Para crear tablas
-import com.itextpdf.text.pdf.PdfPCell  // <-- NUEVO: Para las celdas de las tablas
+import com.itextpdf.text.pdf.PdfPTable 
+import com.itextpdf.text.pdf.PdfPCell  
 
 class ReporteMasterSuite {
 
@@ -50,13 +50,11 @@ class ReporteMasterSuite {
 		String estadoTest = testCaseContext.getTestCaseStatus()
 		String rutaCaptura = ""
 		
-		// 1. Capturamos el Navegador
 		String navegador = "Desconocido"
 		try {
 			navegador = DriverFactory.getExecutedBrowser().getName()
-		} catch (Exception e) {} // Por si es un test de API sin navegador
+		} catch (Exception e) {} 
 		
-		// 2. Capturamos el mensaje de error técnico exacto
 		String errorMsg = ""
 		if(estadoTest.equals("FAILED") || estadoTest.equals("ERROR")) {
 			def mensajeOriginal = testCaseContext.getMessage()
@@ -102,23 +100,19 @@ class ReporteMasterSuite {
 
 			Font fuenteTitulo = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.DARK_GRAY)
 			Font fuenteSubtitulo = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.BLACK)
-			Font fuenteNormal = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK) // Achicamos un poco la letra para la tabla
+			Font fuenteNormal = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK) 
 			Font fuenteChica = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.DARK_GRAY)
 			Font fuenteVerde = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.GREEN)
 			Font fuenteRoja = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.RED)
 
-			// ================= LOGO DE LA EMPRESA =================
+			// LOGO
 			try {
-				// Puedes cambiar esta URL por la del logo real de tu empresa (ej: formato PNG)
-				String urlLogo = "https://tse2.mm.bing.net/th/id/OIP.JJcyrvUOMh__EJMAhkWQwAAAAA?rs=1&pid=ImgDetMain&o=7&rm=3"
+				String urlLogo = "https://via.placeholder.com/150x50/000000/FFFFFF/?text=MI+EMPRESA"
 				Image logo = Image.getInstance(new java.net.URL(urlLogo))
 				logo.setAlignment(Element.ALIGN_RIGHT)
 				logo.scaleToFit(120, 50)
 				document.add(logo)
-			} catch (Exception exLogo) {
-				println("No se pudo cargar el logo.")
-			}
-			// =======================================================
+			} catch (Exception exLogo) {}
 
 			Paragraph titulo = new Paragraph("Reporte Consolidado de Test Suite", fuenteTitulo)
 			titulo.setAlignment(Element.ALIGN_CENTER)
@@ -135,6 +129,7 @@ class ReporteMasterSuite {
 			int totalPasados = listaResultados.count { it.estado.equals("PASSED") }
 			int totalFallados = listaResultados.size() - totalPasados
 			
+			// GRÁFICO
 			try {
 				String configGrafico = "{type:'pie',data:{labels:['PASSED (" + totalPasados + ")','FAILED (" + totalFallados + ")'],datasets:[{data:[" + totalPasados + "," + totalFallados + "],backgroundColor:['rgb(0, 180, 0)','rgb(220, 0, 0)']}]}}"
 				String urlGrafico = "https://quickchart.io/chart?w=350&h=200&c=" + java.net.URLEncoder.encode(configGrafico, "UTF-8")
@@ -146,16 +141,14 @@ class ReporteMasterSuite {
 			
 			document.add(new Paragraph(" "))
 			
-			// ================= TABLA DE RESULTADOS =================
+			// TABLA PRINCIPAL (Sin fotos)
 			document.add(new Paragraph("Detalle de Ejecución:", fuenteSubtitulo))
 			document.add(new Paragraph(" "))
 
-			// Crear tabla de 3 columnas
 			PdfPTable tabla = new PdfPTable(3)
 			tabla.setWidthPercentage(100)
-			tabla.setWidths([35, 45, 20] as float[]) // Proporción de ancho de columnas
+			tabla.setWidths([35, 45, 20] as float[]) 
 
-			// Encabezados grises
 			def headers = ["Test Case", "Detalles / Error", "Estado"]
 			headers.each { texto ->
 				PdfPCell celda = new PdfPCell(new Paragraph(texto, fuenteSubtitulo))
@@ -165,14 +158,11 @@ class ReporteMasterSuite {
 				tabla.addCell(celda)
 			}
 
-			// Llenar datos
 			for (def resultado : listaResultados) {
-				// Columna 1: Nombre
 				PdfPCell celdaNombre = new PdfPCell(new Paragraph(resultado.nombre, fuenteNormal))
 				celdaNombre.setPadding(5)
 				tabla.addCell(celdaNombre)
 
-				// Columna 2: Detalles (Navegador y Error si aplica)
 				Paragraph pDetalles = new Paragraph("Navegador: " + resultado.navegador, fuenteChica)
 				if (resultado.estado.equals("FAILED") || resultado.estado.equals("ERROR")) {
 					pDetalles.add(new Paragraph("Error: " + resultado.error, new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.RED)))
@@ -181,32 +171,68 @@ class ReporteMasterSuite {
 				celdaDetalles.setPadding(5)
 				tabla.addCell(celdaDetalles)
 
-				// Columna 3: Estado y Foto
 				PdfPCell celdaEstado = new PdfPCell()
 				celdaEstado.setPadding(5)
 				celdaEstado.setHorizontalAlignment(Element.ALIGN_CENTER)
+				celdaEstado.setVerticalAlignment(Element.ALIGN_MIDDLE)
 				
 				if (resultado.estado.equals("PASSED")) {
 					celdaEstado.addElement(new Paragraph("PASSED", fuenteVerde))
 				} else {
 					celdaEstado.addElement(new Paragraph("FAILED", fuenteRoja))
-					if (!resultado.foto.equals("") && !resultado.foto.equals("ERROR_CAPTURA")) {
-						try {
-							Image imgMini = Image.getInstance(resultado.foto)
-							imgMini.scaleToFit(100, 100) // Foto chiquita dentro de la tabla
-							imgMini.setAlignment(Element.ALIGN_CENTER)
-							celdaEstado.addElement(imgMini)
-						} catch (Exception e) {}
-					}
+					// AVISO DE ANEXO EN LUGAR DE FOTO
+					Paragraph avisoAnexo = new Paragraph("(Ver Anexo)", fuenteChica)
+					avisoAnexo.setAlignment(Element.ALIGN_CENTER)
+					celdaEstado.addElement(avisoAnexo)
 				}
 				tabla.addCell(celdaEstado)
 			}
-
-			document.add(tabla) // Agregamos la tabla terminada al documento
-			// =======================================================
+			document.add(tabla) 
+			
+			// ================= SECCIÓN DE ANEXO (NUEVA PÁGINA) =================
+			boolean hayFallos = listaResultados.any { it.estado.equals("FAILED") || it.estado.equals("ERROR") }
+			
+			if (hayFallos) {
+				document.newPage() // Forzamos un salto a una página nueva y limpia
+				
+				Paragraph tituloAnexo = new Paragraph("Anexo: Evidencia Visual de Fallos", fuenteTitulo)
+				tituloAnexo.setAlignment(Element.ALIGN_CENTER)
+				document.add(tituloAnexo)
+				document.add(new Paragraph(" "))
+				document.add(new Paragraph("A continuación se detallan las capturas de pantalla de los Test Cases que no lograron completarse exitosamente:", fuenteNormal))
+				document.add(new Paragraph(" "))
+				
+				for (def resultado : listaResultados) {
+					if ((resultado.estado.equals("FAILED") || resultado.estado.equals("ERROR")) && !resultado.foto.equals("") && !resultado.foto.equals("ERROR_CAPTURA")) {
+						
+						// Subtítulo con el nombre del test
+						Paragraph nombreFallo = new Paragraph("▶ Test Case: " + resultado.nombre, fuenteSubtitulo)
+						nombreFallo.setSpacingBefore(15)
+						document.add(nombreFallo)
+						
+						// Pegamos la imagen en TAMAÑO GRANDE
+						try {
+							Image imgGrande = Image.getInstance(resultado.foto)
+							// Le damos hasta 500x600 px de espacio para que se vea con todo lujo de detalles
+							imgGrande.scaleToFit(500, 600) 
+							imgGrande.setAlignment(Element.ALIGN_CENTER)
+							document.add(imgGrande)
+						} catch (Exception e) {
+							document.add(new Paragraph("(No se pudo cargar la imagen ampliada)", fuenteNormal))
+						}
+						
+						// Línea separadora por si hay más de un fallo
+						document.add(new Paragraph(" "))
+						Paragraph separador = new Paragraph("------------------------------------------------------------------------------------------------", fuenteChica)
+						separador.setAlignment(Element.ALIGN_CENTER)
+						document.add(separador)
+					}
+				}
+			}
+			// ====================================================================
 
 			document.close()
-			println("✅ Reporte de SUITE v2 generado con éxito en: " + rutaArchivoPDF)
+			println("✅ Reporte de SUITE con Anexo generado con éxito en: " + rutaArchivoPDF)
 			
 			for (def resultado : listaResultados) {
 				if (!resultado.foto.equals("") && !resultado.foto.equals("ERROR_CAPTURA")) {
