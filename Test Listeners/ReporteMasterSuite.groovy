@@ -86,6 +86,10 @@ class ReporteMasterSuite {
 		long segundos = TimeUnit.MILLISECONDS.toSeconds(tiempoTotalMillis) - TimeUnit.MINUTES.toSeconds(minutos)
 		String tiempoEjecucion = String.format("%02d min, %02d seg", minutos, segundos)
 
+		// RECUPERAMOS LOS DATOS DEL SISTEMA
+		String usuarioEjecutor = System.getProperty("user.name")
+		String sistemaOperativo = System.getProperty("os.name")
+
 		String nombreSuite = testSuiteContext.getTestSuiteId()
 		String nombreLimpioSuite = nombreSuite.substring(nombreSuite.lastIndexOf('/') + 1)
 		
@@ -105,14 +109,23 @@ class ReporteMasterSuite {
 			Font fuenteVerde = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.GREEN)
 			Font fuenteRoja = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.RED)
 
-			// LOGO
+			// ================= LOGO LOCAL =================
 			try {
-				String urlLogo = "https://via.placeholder.com/150x50/000000/FFFFFF/?text=MI+EMPRESA"
-				Image logo = Image.getInstance(new java.net.URL(urlLogo))
-				logo.setAlignment(Element.ALIGN_RIGHT)
-				logo.scaleToFit(120, 50)
-				document.add(logo)
-			} catch (Exception exLogo) {}
+				String rutaLogo = RunConfiguration.getProjectDir() + "/Imagenes/LogoIntiza.png"
+				File archivoLogo = new File(rutaLogo)
+				
+				if (archivoLogo.exists()) {
+					Image logo = Image.getInstance(rutaLogo)
+					logo.setAlignment(Element.ALIGN_RIGHT)
+					logo.scaleToFit(130, 60) 
+					document.add(logo)
+				} else {
+					println("⚠️ Aviso: No se encontró el logo en la ruta local.")
+				}
+			} catch (Exception exLogo) {
+				println("❌ Error al insertar el logo: " + exLogo.getMessage())
+			}
+			// ==============================================
 
 			Paragraph titulo = new Paragraph("Reporte Consolidado de Test Suite", fuenteTitulo)
 			titulo.setAlignment(Element.ALIGN_CENTER)
@@ -122,6 +135,8 @@ class ReporteMasterSuite {
 			document.add(new Paragraph("Datos Generales:", fuenteSubtitulo))
 			document.add(new Paragraph("▶ Nombre de la Suite: " + nombreLimpioSuite, fuenteNormal))
 			document.add(new Paragraph("▶ Fecha: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()), fuenteNormal))
+			document.add(new Paragraph("▶ Usuario ejecutor: " + usuarioEjecutor, fuenteNormal)) // NUEVO
+			document.add(new Paragraph("▶ Sistema Operativo: " + sistemaOperativo, fuenteNormal)) // NUEVO
 			document.add(new Paragraph("▶ Tests ejecutados: " + listaResultados.size(), fuenteNormal))
 			document.add(new Paragraph("▶ Tiempo total: " + tiempoEjecucion, fuenteNormal))
 			document.add(new Paragraph(" "))
@@ -205,15 +220,12 @@ class ReporteMasterSuite {
 				for (def resultado : listaResultados) {
 					if ((resultado.estado.equals("FAILED") || resultado.estado.equals("ERROR")) && !resultado.foto.equals("") && !resultado.foto.equals("ERROR_CAPTURA")) {
 						
-						// Subtítulo con el nombre del test
 						Paragraph nombreFallo = new Paragraph("▶ Test Case: " + resultado.nombre, fuenteSubtitulo)
 						nombreFallo.setSpacingBefore(15)
 						document.add(nombreFallo)
 						
-						// Pegamos la imagen en TAMAÑO GRANDE
 						try {
 							Image imgGrande = Image.getInstance(resultado.foto)
-							// Le damos hasta 500x600 px de espacio para que se vea con todo lujo de detalles
 							imgGrande.scaleToFit(500, 600) 
 							imgGrande.setAlignment(Element.ALIGN_CENTER)
 							document.add(imgGrande)
@@ -221,7 +233,6 @@ class ReporteMasterSuite {
 							document.add(new Paragraph("(No se pudo cargar la imagen ampliada)", fuenteNormal))
 						}
 						
-						// Línea separadora por si hay más de un fallo
 						document.add(new Paragraph(" "))
 						Paragraph separador = new Paragraph("------------------------------------------------------------------------------------------------", fuenteChica)
 						separador.setAlignment(Element.ALIGN_CENTER)
