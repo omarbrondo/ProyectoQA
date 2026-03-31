@@ -21,7 +21,9 @@ import com.itextpdf.text.Element
 import com.itextpdf.text.Image
 import com.itextpdf.text.Chunk
 import com.itextpdf.text.pdf.PdfPTable 
-import com.itextpdf.text.pdf.PdfPCell  
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.draw.LineSeparator 
+import com.itextpdf.text.Rectangle // <-- AQUÍ ESTÁ EL SALVAVIDAS QUE FALTABA 🛟
 
 class ReporteMasterSuite {
 
@@ -86,7 +88,6 @@ class ReporteMasterSuite {
 		long segundos = TimeUnit.MILLISECONDS.toSeconds(tiempoTotalMillis) - TimeUnit.MINUTES.toSeconds(minutos)
 		String tiempoEjecucion = String.format("%02d min, %02d seg", minutos, segundos)
 
-		// RECUPERAMOS LOS DATOS DEL SISTEMA
 		String usuarioEjecutor = System.getProperty("user.name")
 		String sistemaOperativo = System.getProperty("os.name")
 
@@ -102,14 +103,20 @@ class ReporteMasterSuite {
 			PdfWriter.getInstance(document, new FileOutputStream(rutaArchivoPDF))
 			document.open()
 
-			Font fuenteTitulo = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.DARK_GRAY)
-			Font fuenteSubtitulo = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.BLACK)
-			Font fuenteNormal = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK) 
-			Font fuenteChica = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.DARK_GRAY)
-			Font fuenteVerde = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.GREEN)
-			Font fuenteRoja = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.RED)
+			// ================= PALETA DE COLORES Y FUENTES PREMIUM =================
+			BaseColor colorPrimario = new BaseColor(24, 114, 240) 
+			BaseColor colorFondoCard = new BaseColor(245, 247, 250) 
+			
+			Font fuenteTitulo = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD, colorPrimario)
+			Font fuenteSubtitulo = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.DARK_GRAY)
+			Font fuenteCabeceraTabla = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD, BaseColor.WHITE)
+			Font fuenteNormal = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.DARK_GRAY) 
+			Font fuenteChica = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.GRAY)
+			Font fuenteVerde = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, new BaseColor(10, 160, 60)) 
+			Font fuenteRoja = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, new BaseColor(220, 30, 30))
+			// =========================================================================
 
-			// ================= LOGO LOCAL =================
+			// LOGO LOCAL
 			try {
 				String rutaLogo = RunConfiguration.getProjectDir() + "/Imagenes/LogoIntiza.png"
 				File archivoLogo = new File(rutaLogo)
@@ -117,77 +124,105 @@ class ReporteMasterSuite {
 				if (archivoLogo.exists()) {
 					Image logo = Image.getInstance(rutaLogo)
 					logo.setAlignment(Element.ALIGN_RIGHT)
-					logo.scaleToFit(130, 60) 
+					logo.scaleToFit(140, 60) 
 					document.add(logo)
-				} else {
-					println("⚠️ Aviso: No se encontró el logo en la ruta local.")
 				}
-			} catch (Exception exLogo) {
-				println("❌ Error al insertar el logo: " + exLogo.getMessage())
-			}
-			// ==============================================
+			} catch (Exception exLogo) {}
 
-			Paragraph titulo = new Paragraph("Reporte Consolidado de Test Suite", fuenteTitulo)
+			// TÍTULO PRINCIPAL
+			Paragraph titulo = new Paragraph("Reporte de Automatización", fuenteTitulo)
 			titulo.setAlignment(Element.ALIGN_CENTER)
+			titulo.setSpacingAfter(10)
 			document.add(titulo)
 			
-			document.add(new Paragraph(" "))
-			document.add(new Paragraph("Datos Generales:", fuenteSubtitulo))
-			document.add(new Paragraph("▶ Nombre de la Suite: " + nombreLimpioSuite, fuenteNormal))
-			document.add(new Paragraph("▶ Fecha: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()), fuenteNormal))
-			document.add(new Paragraph("▶ Usuario ejecutor: " + usuarioEjecutor, fuenteNormal)) // NUEVO
-			document.add(new Paragraph("▶ Sistema Operativo: " + sistemaOperativo, fuenteNormal)) // NUEVO
-			document.add(new Paragraph("▶ Tests ejecutados: " + listaResultados.size(), fuenteNormal))
-			document.add(new Paragraph("▶ Tiempo total: " + tiempoEjecucion, fuenteNormal))
-			document.add(new Paragraph(" "))
+			// LÍNEA SEPARADORA ELEGANTE
+			LineSeparator lineaDivisoria = new LineSeparator(1.5f, 100f, colorPrimario, Element.ALIGN_CENTER, -2f)
+			document.add(new Chunk(lineaDivisoria))
+			document.add(new Paragraph(" ")) 
+			
+			// ================= TARJETA DE RESUMEN (CARD) =================
+			PdfPTable tablaResumen = new PdfPTable(1)
+			tablaResumen.setWidthPercentage(100)
+			tablaResumen.setSpacingBefore(10)
+			tablaResumen.setSpacingAfter(20)
+
+			PdfPCell celdaResumen = new PdfPCell()
+			celdaResumen.setBackgroundColor(colorFondoCard)
+			celdaResumen.setBorderColor(colorPrimario)
+			celdaResumen.setBorderWidthLeft(4f) 
+			celdaResumen.setBorderWidthRight(0f)
+			celdaResumen.setBorderWidthTop(0f)
+			celdaResumen.setBorderWidthBottom(0f)
+			celdaResumen.setPadding(15f)
+
+			celdaResumen.addElement(new Paragraph("📋 Datos de la Ejecución", fuenteSubtitulo))
+			celdaResumen.addElement(new Paragraph(" "))
+			celdaResumen.addElement(new Paragraph("Suite de Pruebas:   " + nombreLimpioSuite, fuenteNormal))
+			celdaResumen.addElement(new Paragraph("Fecha y Hora:        " + new SimpleDateFormat("dd/MM/yyyy • HH:mm").format(new Date()), fuenteNormal))
+			celdaResumen.addElement(new Paragraph("Entorno (OS):         " + sistemaOperativo + " (" + usuarioEjecutor + ")", fuenteNormal))
+			celdaResumen.addElement(new Paragraph("Tiempo de Vuelo:   " + tiempoEjecucion, fuenteNormal))
+			celdaResumen.addElement(new Paragraph("Total Evaluados:     " + listaResultados.size() + " Test Cases", fuenteNormal))
+			
+			tablaResumen.addCell(celdaResumen)
+			document.add(tablaResumen)
+			// ==============================================================
 			
 			int totalPasados = listaResultados.count { it.estado.equals("PASSED") }
 			int totalFallados = listaResultados.size() - totalPasados
 			
 			// GRÁFICO
 			try {
-				String configGrafico = "{type:'pie',data:{labels:['PASSED (" + totalPasados + ")','FAILED (" + totalFallados + ")'],datasets:[{data:[" + totalPasados + "," + totalFallados + "],backgroundColor:['rgb(0, 180, 0)','rgb(220, 0, 0)']}]}}"
-				String urlGrafico = "https://quickchart.io/chart?w=350&h=200&c=" + java.net.URLEncoder.encode(configGrafico, "UTF-8")
+				String configGrafico = "{type:'pie',data:{labels:['PASSED (" + totalPasados + ")','FAILED (" + totalFallados + ")'],datasets:[{data:[" + totalPasados + "," + totalFallados + "],backgroundColor:['rgb(10, 160, 60)','rgb(220, 30, 30)']}]}}"
+				String urlGrafico = "https://quickchart.io/chart?w=400&h=200&c=" + java.net.URLEncoder.encode(configGrafico, "UTF-8")
 				Image imagenPieChart = Image.getInstance(new java.net.URL(urlGrafico))
-				imagenPieChart.scaleToFit(200, 120) 
+				imagenPieChart.scaleToFit(220, 130) 
 				imagenPieChart.setAlignment(Element.ALIGN_CENTER)
+				imagenPieChart.setSpacingAfter(20) 
 				document.add(imagenPieChart)
 			} catch (Exception exGrafico) {}
 			
-			document.add(new Paragraph(" "))
-			
-			// TABLA PRINCIPAL (Sin fotos)
-			document.add(new Paragraph("Detalle de Ejecución:", fuenteSubtitulo))
-			document.add(new Paragraph(" "))
+			// TABLA PRINCIPAL
+			Paragraph tituloTabla = new Paragraph("Desglose de Test Cases", fuenteSubtitulo)
+			tituloTabla.setSpacingAfter(10)
+			document.add(tituloTabla)
 
 			PdfPTable tabla = new PdfPTable(3)
 			tabla.setWidthPercentage(100)
 			tabla.setWidths([35, 45, 20] as float[]) 
 
-			def headers = ["Test Case", "Detalles / Error", "Estado"]
+			// CABECERAS AZULES
+			def headers = ["Nombre del Test", "Detalles / Trazabilidad", "Estado"]
 			headers.each { texto ->
-				PdfPCell celda = new PdfPCell(new Paragraph(texto, fuenteSubtitulo))
-				celda.setBackgroundColor(BaseColor.LIGHT_GRAY)
-				celda.setPadding(5)
+				PdfPCell celda = new PdfPCell(new Paragraph(texto, fuenteCabeceraTabla))
+				celda.setBackgroundColor(colorPrimario) 
+				celda.setBorderColor(BaseColor.WHITE)
+				celda.setPaddingTop(8)
+				celda.setPaddingBottom(8)
 				celda.setHorizontalAlignment(Element.ALIGN_CENTER)
 				tabla.addCell(celda)
 			}
 
 			for (def resultado : listaResultados) {
+				// Celda Nombre
 				PdfPCell celdaNombre = new PdfPCell(new Paragraph(resultado.nombre, fuenteNormal))
-				celdaNombre.setPadding(5)
+				celdaNombre.setPadding(8)
+				celdaNombre.setBorderColor(BaseColor.LIGHT_GRAY)
 				tabla.addCell(celdaNombre)
 
+				// Celda Detalles
 				Paragraph pDetalles = new Paragraph("Navegador: " + resultado.navegador, fuenteChica)
 				if (resultado.estado.equals("FAILED") || resultado.estado.equals("ERROR")) {
-					pDetalles.add(new Paragraph("Error: " + resultado.error, new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.RED)))
+					pDetalles.add(new Paragraph("Causa: " + resultado.error, new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, fuenteRoja.getColor())))
 				}
 				PdfPCell celdaDetalles = new PdfPCell(pDetalles)
-				celdaDetalles.setPadding(5)
+				celdaDetalles.setPadding(8)
+				celdaDetalles.setBorderColor(BaseColor.LIGHT_GRAY)
 				tabla.addCell(celdaDetalles)
 
+				// Celda Estado
 				PdfPCell celdaEstado = new PdfPCell()
-				celdaEstado.setPadding(5)
+				celdaEstado.setPadding(8)
+				celdaEstado.setBorderColor(BaseColor.LIGHT_GRAY)
 				celdaEstado.setHorizontalAlignment(Element.ALIGN_CENTER)
 				celdaEstado.setVerticalAlignment(Element.ALIGN_MIDDLE)
 				
@@ -195,8 +230,7 @@ class ReporteMasterSuite {
 					celdaEstado.addElement(new Paragraph("PASSED", fuenteVerde))
 				} else {
 					celdaEstado.addElement(new Paragraph("FAILED", fuenteRoja))
-					// AVISO DE ANEXO EN LUGAR DE FOTO
-					Paragraph avisoAnexo = new Paragraph("(Ver Anexo)", fuenteChica)
+					Paragraph avisoAnexo = new Paragraph("🔍 Ver Anexo", fuenteChica)
 					avisoAnexo.setAlignment(Element.ALIGN_CENTER)
 					celdaEstado.addElement(avisoAnexo)
 				}
@@ -204,46 +238,50 @@ class ReporteMasterSuite {
 			}
 			document.add(tabla) 
 			
-			// ================= SECCIÓN DE ANEXO (NUEVA PÁGINA) =================
+			// ================= SECCIÓN DE ANEXO =================
 			boolean hayFallos = listaResultados.any { it.estado.equals("FAILED") || it.estado.equals("ERROR") }
 			
 			if (hayFallos) {
-				document.newPage() // Forzamos un salto a una página nueva y limpia
+				document.newPage() 
 				
-				Paragraph tituloAnexo = new Paragraph("Anexo: Evidencia Visual de Fallos", fuenteTitulo)
+				Paragraph tituloAnexo = new Paragraph("Anexo: Evidencia Visual", fuenteTitulo)
 				tituloAnexo.setAlignment(Element.ALIGN_CENTER)
 				document.add(tituloAnexo)
-				document.add(new Paragraph(" "))
-				document.add(new Paragraph("A continuación se detallan las capturas de pantalla de los Test Cases que no lograron completarse exitosamente:", fuenteNormal))
+				document.add(new Chunk(lineaDivisoria)) 
 				document.add(new Paragraph(" "))
 				
 				for (def resultado : listaResultados) {
 					if ((resultado.estado.equals("FAILED") || resultado.estado.equals("ERROR")) && !resultado.foto.equals("") && !resultado.foto.equals("ERROR_CAPTURA")) {
 						
-						Paragraph nombreFallo = new Paragraph("▶ Test Case: " + resultado.nombre, fuenteSubtitulo)
+						Paragraph nombreFallo = new Paragraph("📸 Test Case: " + resultado.nombre, fuenteSubtitulo)
 						nombreFallo.setSpacingBefore(15)
+						nombreFallo.setSpacingAfter(10)
 						document.add(nombreFallo)
 						
 						try {
 							Image imgGrande = Image.getInstance(resultado.foto)
 							imgGrande.scaleToFit(500, 600) 
 							imgGrande.setAlignment(Element.ALIGN_CENTER)
+							
+							// AHORA SÍ: El borde funcionará porque importamos Rectangle
+							imgGrande.setBorder(Rectangle.BOX)
+							imgGrande.setBorderColor(BaseColor.LIGHT_GRAY)
+							imgGrande.setBorderWidth(1f)
+							
 							document.add(imgGrande)
 						} catch (Exception e) {
-							document.add(new Paragraph("(No se pudo cargar la imagen ampliada)", fuenteNormal))
+							// Si vuelve a fallar, nos va a decir exactamente por qué en la consola
+							println("❌ Error al incrustar imagen en el anexo: " + e.getMessage())
 						}
 						
 						document.add(new Paragraph(" "))
-						Paragraph separador = new Paragraph("------------------------------------------------------------------------------------------------", fuenteChica)
-						separador.setAlignment(Element.ALIGN_CENTER)
-						document.add(separador)
 					}
 				}
 			}
 			// ====================================================================
 
 			document.close()
-			println("✅ Reporte de SUITE con Anexo generado con éxito en: " + rutaArchivoPDF)
+			println("✅ Reporte Premium generado en: " + rutaArchivoPDF)
 			
 			for (def resultado : listaResultados) {
 				if (!resultado.foto.equals("") && !resultado.foto.equals("ERROR_CAPTURA")) {
@@ -253,7 +291,7 @@ class ReporteMasterSuite {
 			}
 
 		} catch (Exception e) {
-			println("❌ Error crítico al generar reporte de Suite: " + e.getMessage())
+			println("❌ Error crítico al generar reporte: " + e.getMessage())
 		}
 	}
 }
