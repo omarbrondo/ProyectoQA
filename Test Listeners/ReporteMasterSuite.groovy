@@ -114,6 +114,8 @@ class ReporteMasterSuite {
 			Font fuenteChica = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.GRAY)
 			Font fuenteVerde = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, new BaseColor(10, 160, 60)) 
 			Font fuenteRoja = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, new BaseColor(220, 30, 30))
+			// NUEVA FUENTE PARA EL ENLACE CLICKEABLE (Azul y subrayado)
+			Font fuenteEnlace = new Font(Font.FontFamily.HELVETICA, 8, Font.UNDERLINE, colorPrimario)
 			// =========================================================================
 
 			// LOGO LOCAL
@@ -140,7 +142,7 @@ class ReporteMasterSuite {
 			document.add(new Chunk(lineaDivisoria))
 			document.add(new Paragraph(" ")) 
 			
-			// ================= TARJETA DE RESUMEN (CARD) =================
+			// ================= TARJETA DE RESUMEN =================
 			PdfPTable tablaResumen = new PdfPTable(1)
 			tablaResumen.setWidthPercentage(100)
 			tablaResumen.setSpacingBefore(10)
@@ -155,36 +157,32 @@ class ReporteMasterSuite {
 			celdaResumen.setBorderWidthBottom(0f)
 			celdaResumen.setPadding(15f)
 
-			celdaResumen.addElement(new Paragraph("📋 Datos de la Ejecución", fuenteSubtitulo))
+			// Quitamos el emoji 📋 y usamos texto limpio
+			celdaResumen.addElement(new Paragraph("Resumen de la Ejecución", fuenteSubtitulo))
 			celdaResumen.addElement(new Paragraph(" "))
 			celdaResumen.addElement(new Paragraph("Suite de Pruebas:   " + nombreLimpioSuite, fuenteNormal))
 			celdaResumen.addElement(new Paragraph("Fecha y Hora:        " + new SimpleDateFormat("dd/MM/yyyy • HH:mm").format(new Date()), fuenteNormal))
 			celdaResumen.addElement(new Paragraph("Entorno (OS):         " + sistemaOperativo + " (" + usuarioEjecutor + ")", fuenteNormal))
-			celdaResumen.addElement(new Paragraph("Tiempo de Vuelo:   " + tiempoEjecucion, fuenteNormal))
+			celdaResumen.addElement(new Paragraph("Tiempo de Ejecución:   " + tiempoEjecucion, fuenteNormal))
 			celdaResumen.addElement(new Paragraph("Total Evaluados:     " + listaResultados.size() + " Test Cases", fuenteNormal))
 			
 			tablaResumen.addCell(celdaResumen)
 			document.add(tablaResumen)
-			// ==============================================================
 			
-			// ================= CÁLCULO DE PORCENTAJES PARA EL GRÁFICO =================
+			// ================= CÁLCULO DE PORCENTAJES =================
 			int totalTests = listaResultados.size()
 			int totalPasados = listaResultados.count { it.estado.equals("PASSED") }
 			int totalFallados = totalTests - totalPasados
 			
-			// Hacemos el cálculo de porcentajes protegiendo contra división por cero
 			int pctPasados = totalTests > 0 ? Math.round((totalPasados * 100.0f) / totalTests) : 0
-			int pctFallados = totalTests > 0 ? (100 - pctPasados) : 0 // Restamos para asegurar que siempre sume exacto 100%
+			int pctFallados = totalTests > 0 ? (100 - pctPasados) : 0 
 			
-			// Armamos las etiquetas hermosas con cantidad y porcentaje
 			String labelPasados = "PASSED: " + totalPasados + " (" + pctPasados + "%)"
 			String labelFallados = "FAILED: " + totalFallados + " (" + pctFallados + "%)"
-			// =========================================================================
 
 			// GRÁFICO
 			try {
-				// Inyectamos nuestras nuevas etiquetas con porcentajes al JSON del gráfico
-				String configGrafico = "{type:'pie',data:{labels:['" + labelPasados + "','" + labelFallados + "'],datasets:[{data:[" + totalPasados + "," + totalFallados + "],backgroundColor:['rgb(10, 160, 60)','rgb(220, 30, 30)']}]}}"
+				String configGrafico = "{type:'pie',data:{labels:['" + labelPasados + "','" + labelFallados + "'],datasets:[{data:[" + totalPasados + "," + totalFallados + "],backgroundColor:['rgb(46, 204, 113)','rgb(231, 76, 60)'], borderColor: 'white', borderWidth: 2}]}}"
 				String urlGrafico = "https://quickchart.io/chart?w=400&h=200&c=" + java.net.URLEncoder.encode(configGrafico, "UTF-8")
 				Image imagenPieChart = Image.getInstance(new java.net.URL(urlGrafico))
 				imagenPieChart.scaleToFit(220, 130) 
@@ -242,9 +240,17 @@ class ReporteMasterSuite {
 					celdaEstado.addElement(new Paragraph("PASSED", fuenteVerde))
 				} else {
 					celdaEstado.addElement(new Paragraph("FAILED", fuenteRoja))
-					Paragraph avisoAnexo = new Paragraph("🔍 Ver Anexo", fuenteChica)
+					
+					// ================= EL ENLACE MÁGICO CLICKEABLE =================
+					// 1. Creamos el texto ("Chunk") azul y subrayado
+					Chunk linkAnexo = new Chunk("[ Ver Evidencia ]", fuenteEnlace)
+					// 2. Le decimos que al hacer clic vaya al destino "ancla_" + nombre del test
+					linkAnexo.setLocalGoto("ancla_" + resultado.nombre)
+					
+					Paragraph avisoAnexo = new Paragraph(linkAnexo)
 					avisoAnexo.setAlignment(Element.ALIGN_CENTER)
 					celdaEstado.addElement(avisoAnexo)
+					// ===============================================================
 				}
 				tabla.addCell(celdaEstado)
 			}
@@ -265,10 +271,17 @@ class ReporteMasterSuite {
 				for (def resultado : listaResultados) {
 					if ((resultado.estado.equals("FAILED") || resultado.estado.equals("ERROR")) && !resultado.foto.equals("") && !resultado.foto.equals("ERROR_CAPTURA")) {
 						
-						Paragraph nombreFallo = new Paragraph("📸 Test Case: " + resultado.nombre, fuenteSubtitulo)
+						// ================= EL DESTINO DEL ENLACE =================
+						// 1. Creamos el título del anexo sin emojis
+						Chunk tituloFalloChunk = new Chunk("Test Case: " + resultado.nombre, fuenteSubtitulo)
+						// 2. Le ponemos el nombre de destino EXACTO que busca el clic de arriba
+						tituloFalloChunk.setLocalDestination("ancla_" + resultado.nombre)
+						
+						Paragraph nombreFallo = new Paragraph(tituloFalloChunk)
 						nombreFallo.setSpacingBefore(15)
 						nombreFallo.setSpacingAfter(10)
 						document.add(nombreFallo)
+						// =========================================================
 						
 						try {
 							Image imgGrande = Image.getInstance(resultado.foto)
