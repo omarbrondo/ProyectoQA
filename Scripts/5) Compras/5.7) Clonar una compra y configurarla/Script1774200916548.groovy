@@ -71,6 +71,13 @@ WebUI.callTestCase(findTestCase('5) Compras/5.7.22) COMPLETAR NUEVO GRUPO DE EVA
 
 WebUI.callTestCase(findTestCase('5) Compras/5.7.24) NAVEGAR A ESTADOS Y CREAR NUEVO'), [:], FailureHandling.STOP_ON_FAILURE)
 WebUI.callTestCase(findTestCase('5) Compras/5.7.25) ELIMINAR ESTADO DE PROVEEDORES'), [:], FailureHandling.STOP_ON_FAILURE)
-*/
+
 // --- Configuración de Evaluadores ---
 WebUI.callTestCase(findTestCase('5) Compras/5.7.26) NAVEGAR A ACTAS Y AGREGAR ASOCIACION'), [:], FailureHandling.STOP_ON_FAILURE)
+*/
+// --- Inicio de licitación ---
+WebUI.callTestCase(findTestCase('5) Compras/5.7.27) EXTRAER CODIGO E INICIAR LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)
+
+// --- Invitar proveedores ---
+WebUI.callTestCase(findTestCase('5) Compras/5.7.28) EXTRAER PROVEEDORES Y VOLVER A LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)
+WebUI.callTestCase(findTestCase('5) Compras/5.7.29) AGREGAR PROVEEDORES A LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)

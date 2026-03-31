@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.28) EXTRAER PROVEEDORES Y VOLVER A LICITACION</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>b4433762-d7ab-4a94-a179-c35a8f9ec764</testCaseGuid>
+</TestCaseEntity>
