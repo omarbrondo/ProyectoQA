@@ -23,7 +23,7 @@ import com.itextpdf.text.Chunk
 import com.itextpdf.text.pdf.PdfPTable 
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.draw.LineSeparator 
-import com.itextpdf.text.Rectangle // <-- AQUÍ ESTÁ EL SALVAVIDAS QUE FALTABA 🛟
+import com.itextpdf.text.Rectangle 
 
 class ReporteMasterSuite {
 
@@ -167,12 +167,24 @@ class ReporteMasterSuite {
 			document.add(tablaResumen)
 			// ==============================================================
 			
+			// ================= CÁLCULO DE PORCENTAJES PARA EL GRÁFICO =================
+			int totalTests = listaResultados.size()
 			int totalPasados = listaResultados.count { it.estado.equals("PASSED") }
-			int totalFallados = listaResultados.size() - totalPasados
+			int totalFallados = totalTests - totalPasados
 			
+			// Hacemos el cálculo de porcentajes protegiendo contra división por cero
+			int pctPasados = totalTests > 0 ? Math.round((totalPasados * 100.0f) / totalTests) : 0
+			int pctFallados = totalTests > 0 ? (100 - pctPasados) : 0 // Restamos para asegurar que siempre sume exacto 100%
+			
+			// Armamos las etiquetas hermosas con cantidad y porcentaje
+			String labelPasados = "PASSED: " + totalPasados + " (" + pctPasados + "%)"
+			String labelFallados = "FAILED: " + totalFallados + " (" + pctFallados + "%)"
+			// =========================================================================
+
 			// GRÁFICO
 			try {
-				String configGrafico = "{type:'pie',data:{labels:['PASSED (" + totalPasados + ")','FAILED (" + totalFallados + ")'],datasets:[{data:[" + totalPasados + "," + totalFallados + "],backgroundColor:['rgb(10, 160, 60)','rgb(220, 30, 30)']}]}}"
+				// Inyectamos nuestras nuevas etiquetas con porcentajes al JSON del gráfico
+				String configGrafico = "{type:'pie',data:{labels:['" + labelPasados + "','" + labelFallados + "'],datasets:[{data:[" + totalPasados + "," + totalFallados + "],backgroundColor:['rgb(10, 160, 60)','rgb(220, 30, 30)']}]}}"
 				String urlGrafico = "https://quickchart.io/chart?w=400&h=200&c=" + java.net.URLEncoder.encode(configGrafico, "UTF-8")
 				Image imagenPieChart = Image.getInstance(new java.net.URL(urlGrafico))
 				imagenPieChart.scaleToFit(220, 130) 
@@ -263,14 +275,12 @@ class ReporteMasterSuite {
 							imgGrande.scaleToFit(500, 600) 
 							imgGrande.setAlignment(Element.ALIGN_CENTER)
 							
-							// AHORA SÍ: El borde funcionará porque importamos Rectangle
 							imgGrande.setBorder(Rectangle.BOX)
 							imgGrande.setBorderColor(BaseColor.LIGHT_GRAY)
 							imgGrande.setBorderWidth(1f)
 							
 							document.add(imgGrande)
 						} catch (Exception e) {
-							// Si vuelve a fallar, nos va a decir exactamente por qué en la consola
 							println("❌ Error al incrustar imagen en el anexo: " + e.getMessage())
 						}
 						
