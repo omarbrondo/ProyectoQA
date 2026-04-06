@@ -132,7 +132,7 @@ class ReporteMasterSuite {
 			} catch (Exception exLogo) {}
 
 			// TÍTULO PRINCIPAL
-			Paragraph titulo = new Paragraph("Reporte de Automatización", fuenteTitulo)
+			Paragraph titulo = new Paragraph("Reporte de QA PROVEEDORES", fuenteTitulo)
 			titulo.setAlignment(Element.ALIGN_CENTER)
 			titulo.setSpacingAfter(10)
 			document.add(titulo)

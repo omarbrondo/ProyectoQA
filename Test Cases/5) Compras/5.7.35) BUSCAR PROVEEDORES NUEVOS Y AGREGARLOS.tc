@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>5.7.35) BUSCAR PROVEEDORES NUEVOS Y AGREGARLOS</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>d0985a3d-f6a3-429d-abf4-622b2403a3cc</testCaseGuid>
+</TestCaseEntity>

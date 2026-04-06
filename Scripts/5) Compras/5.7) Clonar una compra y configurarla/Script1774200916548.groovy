@@ -78,6 +78,10 @@ WebUI.callTestCase(findTestCase('5) Compras/5.7.26) NAVEGAR A ACTAS Y AGREGAR AS
 // --- Inicio de licitación ---
 WebUI.callTestCase(findTestCase('5) Compras/5.7.27) EXTRAER CODIGO E INICIAR LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)
 
+WebUI.callTestCase(findTestCase('5) Compras/5.7.35) BUSCAR PROVEEDORES NUEVOS Y AGREGARLOS'), [:], FailureHandling.STOP_ON_FAILURE)
+
+
+
 // --- Invitar proveedores ---
-WebUI.callTestCase(findTestCase('5) Compras/5.7.28) EXTRAER PROVEEDORES Y VOLVER A LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)
-WebUI.callTestCase(findTestCase('5) Compras/5.7.29) AGREGAR PROVEEDORES A LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)
+//WebUI.callTestCase(findTestCase('5) Compras/5.7.28) EXTRAER PROVEEDORES Y VOLVER A LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)
+//WebUI.callTestCase(findTestCase('5) Compras/5.7.29) AGREGAR PROVEEDORES A LICITACION'), [:], FailureHandling.STOP_ON_FAILURE)
